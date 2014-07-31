@@ -1,7 +1,7 @@
 EdgeFiles
 =========
 <p>
-CMS has announced the XML file layouts for Health Insurance Marketplace Edge Server. This C# project will take the raw enrollment, pharmacy claims, and medical claims data and generate output in the Edge Server format. The participation into this project is open to all issuers who are in need of these XML files. Development is being done under GPU license.
+CMS has announced the XML file layouts for Health Insurance Marketplace Edge Server. This C# project will take the raw enrollment, pharmacy claims, and medical claims data and generate output in the Edge Server format. The participation into this project is open to all issuers who are in need of these XML files. Development is being done under the GNU General Public License.
 </p>
 
 
