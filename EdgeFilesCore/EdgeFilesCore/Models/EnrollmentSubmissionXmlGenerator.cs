@@ -11,6 +11,8 @@ namespace EdgeFilesCore.Models
     {
         public EnrollmentIssuer IncludedEnrollmentIssuer { get; set; }
 
+        public List<InsuredMember> IncludedInsuredMembers { get; set; }
+
         public List<InsuredMemberProfile> IncludedMemberProfiles { get; set; }
 
         #region IXmlGenerator Members
@@ -22,7 +24,8 @@ namespace EdgeFilesCore.Models
             {
                 Indent = true,
                 ConformanceLevel = ConformanceLevel.Auto,
-                Encoding = new UTF8Encoding(false)
+                Encoding = new UTF8Encoding(false),
+                OmitXmlDeclaration = true
             };
 
             //Create namespace for the output
@@ -35,7 +38,6 @@ namespace EdgeFilesCore.Models
             {
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement(prefix, "edgeServerEnrollmentSubmission", nsUrl);
-
                 xmlWriter.WriteElementString(prefix, "fileIdentifier", nsUrl, "27");
                 xmlWriter.WriteElementString(prefix, "executionZoneCode", nsUrl, "T");
                 xmlWriter.WriteElementString(prefix, "interfaceControlReleaseNumber", nsUrl, "02.00.00");
@@ -47,8 +49,8 @@ namespace EdgeFilesCore.Models
                 if (IncludedEnrollmentIssuer != null)
                     GenerateIncludedEnrollmentIssuer(xmlWriter, ns);
 
-                if (IncludedMemberProfiles != null && IncludedMemberProfiles.Any())
-                    GenerateIncludedMemberProfiles(xmlWriter, ns);
+                if (IncludedInsuredMembers != null && IncludedInsuredMembers.Any())
+                    GenerateIncludedInsuredMembers(xmlWriter, ns);
 
                 // end edgeServerEnrollmentSubmission
                 xmlWriter.WriteEndElement();
@@ -61,13 +63,22 @@ namespace EdgeFilesCore.Models
             return filename;
         }
 
+        private void GenerateIncludedInsuredMembers(XmlWriter xmlWriter, XmlSerializerNamespaces ns)
+        {
+            var xmlSerializer = new XmlSerializer(typeof(List<InsuredMember>));
+            xmlSerializer.Serialize(xmlWriter, IncludedInsuredMembers, ns);
+
+            //if (IncludedMemberProfiles != null && IncludedMemberProfiles.Any())
+            //    GenerateIncludedMemberProfiles(xmlWriter, ns);
+        }
+
         #endregion IXmlGenerator Members
 
         private void GenerateIncludedEnrollmentIssuer(XmlWriter xmlWriter, XmlSerializerNamespaces ns)
         {
             var xmlSerializer = new XmlSerializer(typeof(EnrollmentIssuer));
             xmlSerializer.Serialize(xmlWriter, IncludedEnrollmentIssuer, ns);
-            GenerateIncludedMemberProfiles(xmlWriter, ns);
+            //GenerateIncludedMemberProfiles(xmlWriter, ns);
         }
 
         private void GenerateIncludedMemberProfiles(XmlWriter xmlWriter, XmlSerializerNamespaces ns)

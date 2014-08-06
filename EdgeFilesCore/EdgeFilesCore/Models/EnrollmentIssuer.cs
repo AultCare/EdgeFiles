@@ -1,7 +1,9 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace EdgeFilesCore.Models
 {
+    [XmlRoot(ElementName = "includedEnrollmentIssuer", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
     public class EnrollmentIssuer
     {
         [XmlElement("recordIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
@@ -17,6 +19,6 @@ namespace EdgeFilesCore.Models
         public int IssuerInsuredMemberProfileTotalQuantity { get; set; }
 
         [XmlElement("includedInsuredMember", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public InsuredMember IncludedInsuredMember { get; set; }
+        public List<InsuredMember> IncludedInsuredMembers { get; set; }
     }
 }

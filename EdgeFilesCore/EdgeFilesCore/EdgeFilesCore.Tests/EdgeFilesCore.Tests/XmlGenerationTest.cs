@@ -21,16 +21,23 @@ namespace EdgeFilesCore.Tests
                 IssuerInsuredMemberProfileTotalQuantity = 1,
                 IssuerIdentifier = "ASDF"
             };
+
             enrollmentSubmissionXml.IncludedEnrollmentIssuer = enrollmentIssuer;
 
-            var insMem = new List<InsuredMemberProfile> { new InsuredMemberProfile() };
-            InsuredMemberProfile mp = new InsuredMemberProfile
+
+            enrollmentIssuer.IncludedInsuredMembers = new List<InsuredMember>();
+            var insuredMember = new InsuredMember
             {
-                CoverageStartDate = DateTime.Now,
-                CoverageEndDate = DateTime.Now.AddYears(1)
+
+                IncludedInsuredMemberProfile = new InsuredMemberProfile
+                {
+                    CoverageStartDate = DateTime.Now,
+                    CoverageEndDate = DateTime.Now.AddYears(1)
+                }
+
             };
 
-            enrollmentSubmissionXml.IncludedMemberProfiles = insMem;
+            //enrollmentSubmissionXml.IncludedMemberProfiles = insMem;
 
             EdgeFilesCore.Services.XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
             string path = AppDomain.CurrentDomain.BaseDirectory;
