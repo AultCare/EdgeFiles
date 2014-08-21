@@ -19,6 +19,6 @@ namespace EdgeFilesCore.Models
         public int IssuerInsuredMemberProfileTotalQuantity { get; set; }
 
         [XmlElement("includedInsuredMember", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public List<InsuredMember> IncludedInsuredMembers { get; set; }
+        public List<EnrollmentEnrollee> IncludedInsuredMembers { get; set; }
     }
 }

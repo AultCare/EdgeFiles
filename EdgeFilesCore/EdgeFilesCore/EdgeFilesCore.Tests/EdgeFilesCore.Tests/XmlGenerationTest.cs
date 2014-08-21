@@ -21,7 +21,7 @@ namespace EdgeFilesCore.Tests
                 IssuerInsuredMemberProfileTotalQuantity = 3
             };
 
-            var insMemberProfile = new InsuredMemberProfile
+            var insMemberProfile = new EnrollmentEnrolleeProfile
                 {
                     RecordIdentifier = 24,
                     SubscriberIndicator = "S",
@@ -34,9 +34,9 @@ namespace EdgeFilesCore.Tests
                     RateAreaIdentifier = "212"
                 };
 
-            var insMemberList1 = new List<InsuredMemberProfile> { insMemberProfile };
+            var insMemberList1 = new List<EnrollmentEnrolleeProfile> { insMemberProfile };
 
-            var insMemberProfile2 = new InsuredMemberProfile
+            var insMemberProfile2 = new EnrollmentEnrolleeProfile
             {
                 RecordIdentifier = 26,
                 SubscriberIndicator = "S",
@@ -49,7 +49,7 @@ namespace EdgeFilesCore.Tests
                 RateAreaIdentifier = "212"
             };
 
-            var insMemberProfile3 = new InsuredMemberProfile
+            var insMemberProfile3 = new EnrollmentEnrolleeProfile
             {
                 RecordIdentifier = 27,
                 SubscriberIndicator = "",
@@ -62,11 +62,11 @@ namespace EdgeFilesCore.Tests
                 RateAreaIdentifier = "212"
             };
 
-            var insMemberList2 = new List<InsuredMemberProfile> { insMemberProfile2, insMemberProfile3 };
+            var insMemberList2 = new List<EnrollmentEnrolleeProfile> { insMemberProfile2, insMemberProfile3 };
 
-            var includedInsuredMembers = new List<InsuredMember>
+            var includedInsuredMembers = new List<EnrollmentEnrollee>
             {
-                new InsuredMember
+                new EnrollmentEnrollee
                 {
                     RecordIdentifier = 23,
                     InsuredMemberIdentifier = "z42r6x99w15",
@@ -74,7 +74,7 @@ namespace EdgeFilesCore.Tests
                     InsuredMemberGenderCode = "M",
                     IncludedInsuredMemberProfile = insMemberList1
                 },
-                new InsuredMember{
+                new EnrollmentEnrollee{
                     RecordIdentifier = 25,
                     InsuredMemberIdentifier = "r11xtu9874j",
                     InsuredMemberBirthDate = new DateTime(1968, 01, 17),

@@ -42,8 +42,8 @@
     <Compile Include="Models\EnrollmentIssuer.cs" />
     <Compile Include="Models\EnrollmentSubmission.cs" />
     <Compile Include="Models\EnrollmentSubmissionXmlGenerator.cs" />
-    <Compile Include="Models\InsuredMember.cs" />
-    <Compile Include="Models\InsuredMemberProfile.cs" />
+    <Compile Include="Models\EnrollmentEnrollee.cs" />
+    <Compile Include="Models\EnrollmentEnrolleeProfile.cs" />
     <Compile Include="Models\IXmlGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\XmlGeneratorService.cs" />
