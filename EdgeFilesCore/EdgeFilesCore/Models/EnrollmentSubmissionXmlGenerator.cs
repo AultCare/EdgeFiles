@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -10,10 +8,6 @@ namespace EdgeFilesCore.Models
     public class EnrollmentSubmissionXmlGenerator : IXmlGenerator
     {
         public EnrollmentIssuer IncludedEnrollmentIssuer { get; set; }
-
-        public List<InsuredMember> IncludedInsuredMembers { get; set; }
-
-        public List<InsuredMemberProfile> IncludedMemberProfiles { get; set; }
 
         #region IXmlGenerator Members
 
@@ -49,9 +43,6 @@ namespace EdgeFilesCore.Models
                 if (IncludedEnrollmentIssuer != null)
                     GenerateIncludedEnrollmentIssuer(xmlWriter, ns);
 
-                if (IncludedInsuredMembers != null && IncludedInsuredMembers.Any())
-                    GenerateIncludedInsuredMembers(xmlWriter, ns);
-
                 // end edgeServerEnrollmentSubmission
                 xmlWriter.WriteEndElement();
 
@@ -63,28 +54,12 @@ namespace EdgeFilesCore.Models
             return filename;
         }
 
-        private void GenerateIncludedInsuredMembers(XmlWriter xmlWriter, XmlSerializerNamespaces ns)
-        {
-            var xmlSerializer = new XmlSerializer(typeof(List<InsuredMember>));
-            xmlSerializer.Serialize(xmlWriter, IncludedInsuredMembers, ns);
-
-            //if (IncludedMemberProfiles != null && IncludedMemberProfiles.Any())
-            //    GenerateIncludedMemberProfiles(xmlWriter, ns);
-        }
-
         #endregion IXmlGenerator Members
 
         private void GenerateIncludedEnrollmentIssuer(XmlWriter xmlWriter, XmlSerializerNamespaces ns)
         {
             var xmlSerializer = new XmlSerializer(typeof(EnrollmentIssuer));
             xmlSerializer.Serialize(xmlWriter, IncludedEnrollmentIssuer, ns);
-            //GenerateIncludedMemberProfiles(xmlWriter, ns);
-        }
-
-        private void GenerateIncludedMemberProfiles(XmlWriter xmlWriter, XmlSerializerNamespaces ns)
-        {
-            var xmlSerializer = new XmlSerializer(typeof(List<InsuredMemberProfile>));
-            xmlSerializer.Serialize(xmlWriter, IncludedMemberProfiles, ns);
         }
     }
 }
