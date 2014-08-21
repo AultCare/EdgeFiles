@@ -13,6 +13,18 @@ namespace EdgeFilesCore.Tests
         public void EnrollmentFileTest()
         {
             EnrollmentSubmissionXmlGenerator enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator();
+
+            var enrollmentSubmission = new EnrollmentSubmission
+            {
+                FileIdentifier = "27",
+                ExecutionZoneCode = "T",
+                InterfaceControlReleaseNumber = "02.00.00",
+                GenerationDateTime = DateTime.Now.ToUniversalTime(),
+                SubmissionTypeCode = "E",
+                InsuredMemberTotalQuantity = 2,
+                InsuredMemberProfileTotalQuantity = 3
+            };
+
             EnrollmentIssuer enrollmentIssuer = new EnrollmentIssuer
             {
                 RecordIdentifier = 22,
@@ -83,8 +95,8 @@ namespace EdgeFilesCore.Tests
                 }
             };
             enrollmentIssuer.IncludedInsuredMembers = includedInsuredMembers;
-            enrollmentSubmissionXml.IncludedEnrollmentIssuer = enrollmentIssuer;
-
+            enrollmentSubmission.IncludedEnrollmentIssuer = enrollmentIssuer;
+            enrollmentSubmissionXml.EnrollmentSubmission = enrollmentSubmission;
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
 
             string path = AppDomain.CurrentDomain.BaseDirectory;

@@ -7,7 +7,7 @@ namespace EdgeFilesCore.Models
 {
     public class EnrollmentSubmissionXmlGenerator : IXmlGenerator
     {
-        public EnrollmentIssuer IncludedEnrollmentIssuer { get; set; }
+        public EnrollmentSubmission EnrollmentSubmission { get; set; }
 
         #region IXmlGenerator Members
 
@@ -23,43 +23,24 @@ namespace EdgeFilesCore.Models
             };
 
             //Create namespace for the output
-            string nsUrl = "http://vo.edge.fm.cms.hhs.gov";
-            string prefix = "ns1";
+            const string nsUrl = "http://vo.edge.fm.cms.hhs.gov";
+            const string prefix = "ns1";
             var ns = new XmlSerializerNamespaces();
             ns.Add(prefix, nsUrl);
 
             using (XmlWriter xmlWriter = XmlWriter.Create(filename, xmlSettings))
             {
                 xmlWriter.WriteStartDocument();
-                xmlWriter.WriteStartElement(prefix, "edgeServerEnrollmentSubmission", nsUrl);
-                xmlWriter.WriteElementString(prefix, "fileIdentifier", nsUrl, "27");
-                xmlWriter.WriteElementString(prefix, "executionZoneCode", nsUrl, "T");
-                xmlWriter.WriteElementString(prefix, "interfaceControlReleaseNumber", nsUrl, "02.00.00");
-                xmlWriter.WriteElementString(prefix, "generationDateTime", nsUrl, "2014-02-05T00:00:00");
-                xmlWriter.WriteElementString(prefix, "submissionTypeCode", nsUrl, "E");
-                xmlWriter.WriteElementString(prefix, "insuredMemberTotalQuantity", nsUrl, "2");
-                xmlWriter.WriteElementString(prefix, "insuredMemberProfileTotalQuantity", nsUrl, "3");
 
-                if (IncludedEnrollmentIssuer != null)
-                    GenerateIncludedEnrollmentIssuer(xmlWriter, ns);
-
-                // end edgeServerEnrollmentSubmission
-                xmlWriter.WriteEndElement();
+                var xmlSerializer = new XmlSerializer(typeof(EnrollmentSubmission));
+                xmlSerializer.Serialize(xmlWriter, EnrollmentSubmission, ns);
 
                 xmlWriter.WriteEndDocument();
-                xmlWriter.Close();
-                xmlWriter.Flush();
             }
 
             return filename;
         }
 
         #endregion IXmlGenerator Members
-
-        private void GenerateIncludedEnrollmentIssuer(XmlWriter xmlWriter, XmlSerializerNamespaces ns)
-        {
-            var xmlSerializer = new XmlSerializer(typeof(EnrollmentIssuer));
-            xmlSerializer.Serialize(xmlWriter, IncludedEnrollmentIssuer, ns);
-        }
     }
 }
