@@ -5,13 +5,13 @@ using System.Xml.Serialization;
 
 namespace EdgeFilesCore.Models
 {
-    public class EnrollmentSubmissionXmlGenerator : IXmlGenerator
+    public class PharmacyClaimsSubmissionXmlGenerator : IXmlGenerator
     {
-        public EnrollmentSubmission EnrollmentSubmission { get; set; }
+        public PharmacyClaimsSubmission PharmacyClaimsSubmission { get; set; }
 
         public string GenerateXml(string filePath)
         {
-            string filename = Path.Combine(filePath, "TestFile.xml");
+            string filename = Path.Combine(filePath, "PharmacyClaims_TestFile.xml");
             var xmlSettings = new XmlWriterSettings
             {
                 Indent = true,
@@ -30,8 +30,8 @@ namespace EdgeFilesCore.Models
             {
                 xmlWriter.WriteStartDocument();
 
-                var xmlSerializer = new XmlSerializer(typeof (EnrollmentSubmission));
-                xmlSerializer.Serialize(xmlWriter, EnrollmentSubmission, ns);
+                var xmlSerializer = new XmlSerializer(typeof (PharmacyClaimsSubmission));
+                xmlSerializer.Serialize(xmlWriter, PharmacyClaimsSubmission, ns);
 
                 xmlWriter.WriteEndDocument();
             }

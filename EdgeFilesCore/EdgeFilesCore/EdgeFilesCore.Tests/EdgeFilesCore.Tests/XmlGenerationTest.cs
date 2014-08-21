@@ -10,6 +10,94 @@ namespace EdgeFilesCore.Tests
     public class XmlGenerationTest
     {
         [TestMethod]
+        public void PharmacyClaimsFileTest()
+        {
+            PharmacyClaimsSubmissionXmlGenerator pharmacyClaimsSubmissionXmlGenerator =
+                new PharmacyClaimsSubmissionXmlGenerator();
+
+            var pharmacyClaimsSubmission = new PharmacyClaimsSubmission
+            {
+                FileIdentifier = "123456789120",
+                ExecutionZoneCode = "T",
+                InterfaceControlReleaseNumber = "02.00.00",
+                GenerationDateTime = DateTime.Now,
+                SubmissionTypeCode = "P",
+                ClaimDetailTotalQuantity = 2,
+                InsurancePlanPaidOnFileTotalAmount = 1000.10M
+            };
+
+            var pharmacyClaimIssuer = new PharmacyClaimIssuer
+            {
+                RecordIdentifier = 120,
+                IssuerIdentifier = "01234",
+                IssuerClaimDetailTotalQuantity = 2,
+                IssuerPlanPaidTotalAmount = 1000.10M,
+                IncludedPharmacyClaimInsurancePlan = new PharmacyClaimInsurancePlan()
+            };
+
+            var pharmacyClaimInsurancePlan = new PharmacyClaimInsurancePlan
+            {
+                RecordIdentifier = 121,
+                InsurancePlanIdentifier = "01234MD001555500",
+                InsurancePlanClaimDetailTotalQuantity = 2,
+                PolicyPaidTotalAmount = 1000.10M,
+                IncludedPharmacyClaimDetail = new List<PharmacyClaimLevel>()
+            };
+
+            pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlan = pharmacyClaimInsurancePlan;
+
+            var pharmacyClaim1 = new PharmacyClaimLevel
+            {
+                RecordIdentifier = 122,
+                InsuredMemberIdentifier = "z42r6x99w15",
+                ClaimIdentifier = "12323920140315A2",
+                ClaimProcessedDateTime = new DateTime(2013, 3, 15),
+                PrescriptionFillDate = new DateTime(2014, 3, 1),
+                IssuerClaimPaidDate = new DateTime(2014, 3, 1),
+                PrescriptionServiceReferenceNumber = "01",
+                NationalDrugCode = "1659084390",
+                DispensingProviderIdQualifier = "XX",
+                DispensingProviderIdentifier = "808401234567893",
+                PrescriptionFillNumber = 2,
+                DispensingStatusCode = "C",
+                VoidReplaceCode = "",
+                AllowedTotalCostAmount = 10000.01M,
+                PolicyPaidAmount = 500.05M,
+                DerivedServiceClaimIndicator = ""
+            };
+
+            var pharmacyClaim2 = new PharmacyClaimLevel
+            {
+                RecordIdentifier = 123,
+                InsuredMemberIdentifier = "r11xtu9874j",
+                ClaimIdentifier = "12324020140215A1",
+                ClaimProcessedDateTime = new DateTime(2013, 2, 15),
+                PrescriptionFillDate = new DateTime(2014, 2, 1),
+                IssuerClaimPaidDate = new DateTime(2014, 2, 1),
+                PrescriptionServiceReferenceNumber = "01",
+                NationalDrugCode = "6353923479",
+                DispensingProviderIdQualifier = "XX",
+                DispensingProviderIdentifier = "808401234567893",
+                PrescriptionFillNumber = 2,
+                DispensingStatusCode = "C",
+                VoidReplaceCode = "R",
+                AllowedTotalCostAmount = 10000.01M,
+                PolicyPaidAmount = 500.05M,
+                DerivedServiceClaimIndicator = "Y"
+            };
+
+            pharmacyClaimInsurancePlan.IncludedPharmacyClaimDetail.Add(pharmacyClaim1);
+            pharmacyClaimInsurancePlan.IncludedPharmacyClaimDetail.Add(pharmacyClaim2);
+
+            pharmacyClaimsSubmission.IncludedPharmacyClaimIssuer = pharmacyClaimIssuer;
+
+            pharmacyClaimsSubmissionXmlGenerator.PharmacyClaimsSubmission = pharmacyClaimsSubmission;
+            XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(pharmacyClaimsSubmissionXmlGenerator);
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            xmlGeneratorService.GenerateXml(path);
+        }
+
+        [TestMethod]
         public void EnrollmentFileTest()
         {
             EnrollmentSubmissionXmlGenerator enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator();
