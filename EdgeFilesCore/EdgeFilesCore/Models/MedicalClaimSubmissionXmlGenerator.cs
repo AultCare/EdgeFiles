@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -9,9 +10,18 @@ namespace EdgeFilesCore.Models
     {
         public MedicalClaimSubmission MedicalClaimSubmission { get; set; }
 
+        public string HiosId { get; set; }
+
+        public char ExecutionZone { get; set; }
+
         public string GenerateXml(string filePath)
         {
-            string filename = Path.Combine(filePath, "MedicalClaims_TestFile.xml");
+            DateTime genDate = DateTime.Now.ToUniversalTime();
+            string xmlFileName = string.Concat(HiosId, ".M.D", genDate.Date.ToString("MMddyyyy"),
+                "T", genDate.TimeOfDay.Hours.ToString(),
+                genDate.TimeOfDay.Minutes.ToString(), genDate.TimeOfDay.Seconds.ToString(),
+                ".", ExecutionZone.ToString(), ".xml");
+            string fullFilename = Path.Combine(filePath, xmlFileName);
             var xmlSettings = new XmlWriterSettings
             {
                 Indent = true,
@@ -26,7 +36,7 @@ namespace EdgeFilesCore.Models
             var ns = new XmlSerializerNamespaces();
             ns.Add(prefix, nsUrl);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(filename, xmlSettings))
+            using (XmlWriter xmlWriter = XmlWriter.Create(fullFilename, xmlSettings))
             {
                 xmlWriter.WriteStartDocument();
 
@@ -36,7 +46,7 @@ namespace EdgeFilesCore.Models
                 xmlWriter.WriteEndDocument();
             }
 
-            return filename;
+            return fullFilename;
         }
     }
 }

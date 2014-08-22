@@ -58,6 +58,10 @@
     <Compile Include="Models\PharmacyClaimSubmission.cs" />
     <Compile Include="Models\PharmacyClaimSubmissionXmlGenerator.cs" />
     <Compile Include="Models\Submission.cs" />
+    <Compile Include="Models\SupplementalDiagnosisDetail.cs" />
+    <Compile Include="Models\SupplementalDiagnosisIssuer.cs" />
+    <Compile Include="Models\SupplementalDiagnosisPlan.cs" />
+    <Compile Include="Models\SupplementalDiagnosisSubmission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\XmlGeneratorService.cs" />
   </ItemGroup>

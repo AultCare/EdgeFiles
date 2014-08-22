@@ -102,7 +102,8 @@ namespace EdgeFilesCore.Tests
             medicalClaimSubmission.IncludedMedicalClaimIssuer.Add(medicalClaimIssuer);
 
             medicalClaimSubmissionXmlGenerator.MedicalClaimSubmission = medicalClaimSubmission;
-
+            medicalClaimSubmissionXmlGenerator.HiosId = "12345";
+            medicalClaimSubmissionXmlGenerator.ExecutionZone = 'T';
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(medicalClaimSubmissionXmlGenerator);
 
             string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -192,6 +193,10 @@ namespace EdgeFilesCore.Tests
             pharmacyClaimsSubmission.IncludedPharmacyClaimIssuer = pharmacyClaimIssuer;
 
             pharmacyClaimsSubmissionXmlGenerator.PharmacyClaimsSubmission = pharmacyClaimsSubmission;
+
+            pharmacyClaimsSubmissionXmlGenerator.HiosId = "12345";
+            pharmacyClaimsSubmissionXmlGenerator.ExecutionZone = 'T';
+            
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(pharmacyClaimsSubmissionXmlGenerator);
             string path = AppDomain.CurrentDomain.BaseDirectory;
             xmlGeneratorService.GenerateXml(path);
@@ -285,6 +290,10 @@ namespace EdgeFilesCore.Tests
             enrollmentIssuer.IncludedInsuredMembers = includedInsuredMembers;
             enrollmentSubmission.IncludedEnrollmentIssuer = enrollmentIssuer;
             enrollmentSubmissionXml.EnrollmentSubmission = enrollmentSubmission;
+
+            enrollmentSubmissionXml.HiosId = "12345";
+            enrollmentSubmissionXml.ExecutionZone = 'T';
+
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
 
             string path = AppDomain.CurrentDomain.BaseDirectory;
