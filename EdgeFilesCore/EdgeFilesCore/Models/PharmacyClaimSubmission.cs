@@ -3,7 +3,7 @@
 namespace EdgeFilesCore.Models
 {
     [XmlRoot(ElementName = "edgeServerPharmacyClaimSubmission", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-    public class PharmacyClaimsSubmission : Submission
+    public class PharmacyClaimSubmission : Submission
     {
         [XmlElement("claimDetailTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public int ClaimDetailTotalQuantity { get; set; }

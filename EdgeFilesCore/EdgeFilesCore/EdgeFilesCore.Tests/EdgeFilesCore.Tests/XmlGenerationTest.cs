@@ -10,12 +10,112 @@ namespace EdgeFilesCore.Tests
     public class XmlGenerationTest
     {
         [TestMethod]
+        public void MedicalClaimsFileTest()
+        {
+            MedicalClaimSubmissionXmlGenerator medicalClaimSubmissionXmlGenerator =
+                new MedicalClaimSubmissionXmlGenerator();
+
+            var medicalClaimSubmission = new MedicalClaimSubmission
+            {
+                FileIdentifier = "123456780",
+                ExecutionZoneCode = "T",
+                InterfaceControlReleaseNumber = "02.00.00",
+                GenerationDateTime = DateTime.Now,
+                SubmissionTypeCode = "M",
+                ClaimDetailTotalQuantity = 1,
+                ClaimServiceLineTotalQuantity = 1,
+                InsurancePlanPaidOnFileTotalAmount = 715.00M,
+                IncludedMedicalClaimIssuer = new List<MedicalClaimIssuer>()
+            };
+
+            var medicalClaimIssuer = new MedicalClaimIssuer
+            {
+                RecordIdentifier = 1,
+                IssuerIdentifier = "",
+                IssuerClaimDetailTotalQuantity = 1,
+                IssuerClaimServiceLineTotalQuantity = 1,
+                IssuerPlanPaidTotalAmount = 715.00M,
+                IncludedMedicalClaimPlan = new List<MedicalClaimPlan>()
+            };
+
+            var medicalClaimPlan = new MedicalClaimPlan
+            {
+                RecordIdentifier = 2,
+                InsurancePlanIdentifier = "34567MD004555500",
+                InsurancePlanClaimDetailTotalQuantity = 1,
+                InsurancePlanClaimServiceLineTotalQuantity = 1,
+                InsurancePlanPaidTotalAmount = 715.00M,
+                IncludedMedicalClaimDetail = new List<MedicalClaimDetail>()
+            };
+
+            var medicalClaimDetail = new MedicalClaimDetail
+            {
+                RecordIdentifier = 3,
+                InsuredMemberIdentifier = "z42r6x99w15",
+                FormTypeCode = "0",
+                ClaimIdentifier = "12345720140401",
+                OriginalClaimIdentifier = "",
+                ClaimProcessedDateTime = new DateTime(2014, 4, 1),
+                BillTypeCode = "113",
+                VoidReplaceCode = "",
+                DiagnosisTypeCode = "01",
+                DiagnosisCode = new List<string> { "5559", "v1272", "1539" },
+                DischargeStatusCode = "30",
+                StatementCoverFromDate = new DateTime(2014, 03, 15),
+                StatementCoverToDate = new DateTime(2014, 03, 15),
+                BillingProviderIdQualifier = "99",
+                BillingProviderIdentifier = "808401234567893",
+                IssuerClaimPaidDate = new DateTime(2014, 4, 1),
+                AllowedTotalAmount = 865.00M,
+                PolicyPaidTotalAmount = 715M,
+                DerivedServiceClaimIndicator = "N"
+            };
+
+            var detailServiceLine = new MedicalClaimDetailServiceLine
+            {
+                IncludedDetailServiceLine = new List<MedicalClaimServiceLine>()
+            };
+
+            var medicalClaimSvcLine = new MedicalClaimServiceLine
+            {
+                RecordIdentifier = 4,
+                ServiceLineNumber = 1,
+                ServiceFromDate = new DateTime(2014, 03, 15),
+                ServiceToDate = new DateTime(2014, 03, 15),
+                RevenueCode = "0490",
+                ServiceTypeCode = "03",
+                ServiceCode = "45738",
+                ServiceModifierCode = new List<string> { "" },
+                ServiceFacilityTypeCode = "",
+                RenderingProviderIdQualifier = "99",
+                RenderingProviderIdentifier = "808401234567893",
+                AllowedAmount = 865M,
+                PolicyPaidAmount = 715M,
+                DerivedServiceClaimIndicator = "N"
+
+            };
+
+            detailServiceLine.IncludedDetailServiceLine.Add(medicalClaimSvcLine);
+            medicalClaimDetail.IncludedDetailServiceLine = detailServiceLine;
+            medicalClaimPlan.IncludedMedicalClaimDetail.Add(medicalClaimDetail);
+            medicalClaimIssuer.IncludedMedicalClaimPlan.Add(medicalClaimPlan);
+            medicalClaimSubmission.IncludedMedicalClaimIssuer.Add(medicalClaimIssuer);
+
+            medicalClaimSubmissionXmlGenerator.MedicalClaimSubmission = medicalClaimSubmission;
+
+            XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(medicalClaimSubmissionXmlGenerator);
+
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            xmlGeneratorService.GenerateXml(path);
+        }
+
+        [TestMethod]
         public void PharmacyClaimsFileTest()
         {
-            PharmacyClaimsSubmissionXmlGenerator pharmacyClaimsSubmissionXmlGenerator =
-                new PharmacyClaimsSubmissionXmlGenerator();
+            PharmacyClaimSubmissionXmlGenerator pharmacyClaimsSubmissionXmlGenerator =
+                new PharmacyClaimSubmissionXmlGenerator();
 
-            var pharmacyClaimsSubmission = new PharmacyClaimsSubmission
+            var pharmacyClaimsSubmission = new PharmacyClaimSubmission
             {
                 FileIdentifier = "123456789120",
                 ExecutionZoneCode = "T",
