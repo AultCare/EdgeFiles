@@ -2,14 +2,10 @@
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace EdgeFilesCore.Models
+namespace EdgeFilesAPI.ViewModels
 {
-    public class Submission
+    public class SubmissionViewModel
     {
-        [XmlElement("fileIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        [JsonProperty(Required = Required.Always)]
-        public string FileIdentifier { get; set; }
-
         [XmlElement("executionZoneCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
         public string ExecutionZoneCode { get; set; }

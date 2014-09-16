@@ -1,10 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace EdgeFilesCore.Models
+namespace EdgeFilesAPI.ViewModels
 {
-    [XmlRoot(ElementName = "edgeServerEnrollmentSubmission", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-    public class EnrollmentSubmission : Submission
+    public class EnrollmentSubmissionViewModel : SubmissionViewModel
     {
         [JsonProperty(Required = Required.Always)]
         [XmlElement("insuredMemberTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
@@ -15,7 +15,6 @@ namespace EdgeFilesCore.Models
         public int InsuredMemberProfileTotalQuantity { get; set; }
 
         [JsonProperty(Required = Required.Always)]
-        [XmlElement("includedEnrollmentIssuer", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public EnrollmentIssuer IncludedEnrollmentIssuer { get; set; }
+        public List<EnrolleeDetailsViewModel> EnrolleeDetails { get; set; }
     }
 }

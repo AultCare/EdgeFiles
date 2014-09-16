@@ -1,0 +1,88 @@
+﻿{
+  "title": "EnrollmentSubmissionViewModel",
+  "type": "object",
+  "properties": {
+    "InsuredMemberTotalQuantity": {
+      "required": true,
+      "type": "integer"
+    },
+    "InsuredMemberProfileTotalQuantity": {
+      "required": true,
+      "type": "integer"
+    },
+    "EnrolleeDetails": {
+      "required": true,
+      "type": "array",
+      "items": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "BirthDate": {
+            "required": true,
+            "type": "string"
+          },
+          "Gender": {
+            "required": true,
+            "type": "string"
+          },
+          "SubscriberInd": {
+            "required": true,
+            "type": "boolean"
+          },
+          "SubscriberMemberId": {
+            "required": true,
+            "type": "integer"
+          },
+          "PlanId": {
+            "required": true,
+            "type": "string"
+          },
+          "CoverageStart": {
+            "required": true,
+            "type": "string"
+          },
+          "CoverageEnd": {
+            "required": true,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "MaintenanceTypeCode": {
+            "required": true,
+            "type": "string"
+          },
+          "PremiumAmount": {
+            "required": true,
+            "type": "number"
+          },
+          "RatingArea": {
+            "required": true,
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "ExecutionZoneCode": {
+      "required": true,
+      "type": "string"
+    },
+    "InterfaceControlReleaseNumber": {
+      "required": true,
+      "type": "string"
+    },
+    "GenerationDateTime": {
+      "required": true,
+      "type": "string"
+    },
+    "SubmissionTypeCode": {
+      "required": true,
+      "type": "string"
+    }
+  }
+}
