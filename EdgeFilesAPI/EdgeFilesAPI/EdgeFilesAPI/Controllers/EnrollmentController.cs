@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
@@ -14,59 +16,70 @@ namespace EdgeFilesAPI.Controllers
     public class EnrollmentController : ApiController
     {
         // POST api/<controller>
-        public string Post(EnrollmentSubmissionViewModel enrolleeSubmission)
+        public HttpResponseMessage Post(EnrollmentSubmissionViewModel enrolleeSubmission)
         {
             // 1. Accept list of enrollees
             // 2. Use Core classes to create list of enrollees/member profiles
             // 3. Create the headers, etc.
-            // 4. Return XML generated?
+            // 4. Return XML generated
             var enrolleeList = new List<EnrollmentEnrollee>();
+            int profileCount = 0;
+            // todo record counts
 
             foreach (var enrollee in enrolleeSubmission.EnrolleeDetails)
             {
+                // If it is not a subscriber we want to continue.
+                if (!enrollee.SubscriberInd) continue;
+
                 var e = new EnrollmentEnrollee
                 {
+                    InsuredMemberIdentifier = MaskService.PasswordHash.CreateHash(enrollee.MemberId),
                     InsuredMemberBirthDate = enrollee.BirthDate,
                     InsuredMemberGenderCode = enrollee.Gender,
-
-                    // TODO -- one EnrollmentEnrolleeProfile per enrollment period
                     IncludedInsuredMemberProfile = new List<EnrollmentEnrolleeProfile>()
                 };
 
-                var profile = new EnrollmentEnrolleeProfile
-                {
-                    CoverageStartDate = enrollee.CoverageStart,
-                    CoverageEndDate = enrollee.CoverageEnd ?? new DateTime(enrollee.CoverageStart.Year, 12, 31),
-                    EnrollmentMaintenanceTypeCode = enrollee.MaintenanceTypeCode,
-                    InsurancePlanIdentifier = enrollee.PlanId,
-                    InsurancePlanPremiumAmount = enrollee.PremiumAmount,
-                    RateAreaIdentifier = enrollee.RatingArea,
-                    SubscriberIdentifier = enrollee.SubscriberInd ? "" : enrollee.SubscriberMemberId.ToString(), // TODO - masked ID
-                    SubscriberIndicator = enrollee.SubscriberInd ? "S" : ""
-                };
+                EnrolleeDetailsViewModel enrollee1 = enrollee;
+                var dependents = enrolleeSubmission.EnrolleeDetails.Where(x => x.SubscriberMemberId.ToString() == enrollee1.MemberId.ToString());
 
-                e.IncludedInsuredMemberProfile.Add(profile);
+                var dependentProfiles = new List<EnrollmentEnrolleeProfile>();
+
+                // TODO -- need to do this per enrollment period
+
+                foreach (var enrolleeDetailsViewModel in dependents)
+                {
+                    var profile = new EnrollmentEnrolleeProfile
+                    {
+                        CoverageStartDate = enrolleeDetailsViewModel.CoverageStart,
+                        CoverageEndDate = enrolleeDetailsViewModel.CoverageEnd ?? new DateTime(enrollee.CoverageStart.Year, 12, 31),
+                        EnrollmentMaintenanceTypeCode = enrolleeDetailsViewModel.MaintenanceTypeCode,
+                        InsurancePlanIdentifier = enrolleeDetailsViewModel.PlanId,
+                        InsurancePlanPremiumAmount = enrolleeDetailsViewModel.PremiumAmount,
+                        RateAreaIdentifier = enrolleeDetailsViewModel.RatingArea,
+                        SubscriberIdentifier = enrolleeDetailsViewModel.SubscriberInd ? "" : MaskService.PasswordHash.CreateHash(enrolleeDetailsViewModel.SubscriberMemberId.ToString()),
+                        SubscriberIndicator = enrolleeDetailsViewModel.SubscriberInd ? "S" : ""
+                    };
+                    profileCount += 1;
+                    dependentProfiles.Add(profile);
+                }
+
+                e.IncludedInsuredMemberProfile.AddRange(dependentProfiles);
                 enrolleeList.Add(e);
             }
 
-            var issuer = new EnrollmentIssuer();
-            issuer.IncludedInsuredMembers = new List<EnrollmentEnrollee>();
+            var issuer = new EnrollmentIssuer {IncludedInsuredMembers = new List<EnrollmentEnrollee>()};
             issuer.IncludedInsuredMembers.AddRange(enrolleeList);
+            issuer.IssuerInsuredMemberProfileTotalQuantity = profileCount;
+            issuer.IssuerInsuredMemberTotalQuantity = enrolleeList.Count();
 
             var submission = new EnrollmentSubmission
             {
                 ExecutionZoneCode = "",
                 GenerationDateTime = DateTime.Now,
-                IncludedEnrollmentIssuer = issuer
+                IncludedEnrollmentIssuer = issuer,
+                InsuredMemberProfileTotalQuantity = profileCount,
+                InsuredMemberTotalQuantity = enrolleeList.Count()
             };
-
-            //enrolleeSubmission.FileIdentifier = "00";
-            //enrolleeSubmission.ExecutionZoneCode = ;
-            //enrolleeSubmission.GenerationDateTime = DateTime.Now.ToUniversalTime();
-            //enrolleeSubmission.InterfaceControlReleaseNumber = "02.00.00";
-            //enrolleeSubmission.SubmissionTypeCode = "E";
-            enrolleeSubmission.InsuredMemberProfileTotalQuantity = enrolleeList.Count();
-            enrolleeSubmission.InsuredMemberProfileTotalQuantity = 0; // TODO
 
             EnrollmentSubmissionXmlGenerator enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator
             {
@@ -85,7 +98,9 @@ namespace EdgeFilesAPI.Controllers
             var xml = doc.OuterXml;
             File.Delete(filePath);
 
-            return xml;
+            xml = xml.Replace(@"\", @"""");
+
+            return new HttpResponseMessage { Content = new StringContent(xml, Encoding.UTF8, "application/xml") };
         }
     }
 }

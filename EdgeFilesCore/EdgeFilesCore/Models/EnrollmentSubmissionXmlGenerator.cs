@@ -11,6 +11,7 @@ namespace EdgeFilesCore.Models
         public EnrollmentSubmission EnrollmentSubmission { get; set; }
 
         public string HiosId { get; set; }
+
         public char ExecutionZone { get; set; }
 
         public string GenerateXml(string filePath)
@@ -28,6 +29,18 @@ namespace EdgeFilesCore.Models
                 Encoding = new UTF8Encoding(false),
                 OmitXmlDeclaration = true
             };
+
+            // Set record IDs
+            int recordId = 0;
+
+            EnrollmentSubmission.IncludedEnrollmentIssuer.RecordIdentifier = recordId++;
+
+            foreach (var includedInsuredMember in EnrollmentSubmission.IncludedEnrollmentIssuer.IncludedInsuredMembers)
+            {
+                includedInsuredMember.RecordIdentifier = recordId++;
+                var insMem = includedInsuredMember;
+                insMem.IncludedInsuredMemberProfile.ForEach(x => x.RecordIdentifier = recordId++);
+            }
 
             //Create namespace for the output
             const string nsUrl = "http://vo.edge.fm.cms.hhs.gov";

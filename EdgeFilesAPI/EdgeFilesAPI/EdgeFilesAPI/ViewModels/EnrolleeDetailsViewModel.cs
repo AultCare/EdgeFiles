@@ -6,6 +6,9 @@ namespace EdgeFilesAPI.ViewModels
     public class EnrolleeDetailsViewModel
     {
         [JsonProperty(Required = Required.Always)]
+        public string MemberId { get; set; }
+
+        [JsonProperty(Required = Required.Always)]
         public DateTime BirthDate { get; set; }
 
         [JsonProperty(Required = Required.Always)]
