@@ -31,7 +31,7 @@ namespace EdgeFilesCore.Models
             };
 
             // Set record IDs
-            int recordId = 0;
+            int recordId = 1;
 
             EnrollmentSubmission.IncludedEnrollmentIssuer.RecordIdentifier = recordId++;
 
@@ -41,7 +41,7 @@ namespace EdgeFilesCore.Models
                 var insMem = includedInsuredMember;
                 insMem.IncludedInsuredMemberProfile.ForEach(x => x.RecordIdentifier = recordId++);
             }
-
+            
             //Create namespace for the output
             const string nsUrl = "http://vo.edge.fm.cms.hhs.gov";
             const string prefix = "ns1";

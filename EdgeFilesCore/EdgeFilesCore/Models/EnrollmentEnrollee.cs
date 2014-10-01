@@ -18,7 +18,7 @@ namespace EdgeFilesCore.Models
 
         [JsonProperty(Required = Required.Always)]
         [XmlElement("insuredMemberBirthDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime InsuredMemberBirthDate { get; set; }
+        public string InsuredMemberBirthDate { get; set; }
 
         [JsonProperty(Required = Required.Always)]
         [XmlElement("insuredMemberGenderCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]

@@ -20,7 +20,7 @@ namespace EdgeFilesCore.Models
 
         [XmlElement("generationDateTime", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public DateTime GenerationDateTime { get; set; }
+        public string GenerationDateTime { get; set; }
 
         [XmlElement("submissionTypeCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]

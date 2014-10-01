@@ -25,22 +25,22 @@ namespace EdgeFilesCore.Models
 
         [JsonProperty(Required = Required.Always)]
         [XmlElement("coverageStartDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime CoverageStartDate { get; set; }
+        public string CoverageStartDate { get; set; }
 
         [JsonProperty(Required = Required.Always)]
         [XmlElement("coverageEndDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime CoverageEndDate { get; set; }
+        public string CoverageEndDate { get; set; }
 
         [JsonProperty(Required = Required.Always)]
         [XmlElement("enrollmentMaintenanceTypeCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string EnrollmentMaintenanceTypeCode { get; set; }
 
         [JsonProperty(Required = Required.Always)]
-        [XmlElement("rateAreaIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public string RateAreaIdentifier { get; set; }
-
-        [JsonProperty(Required = Required.Always)]
         [XmlElement("insurancePlanPremiumAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public decimal InsurancePlanPremiumAmount { get; set; }
+
+        [JsonProperty(Required = Required.Always)]
+        [XmlElement("rateAreaIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        public string RateAreaIdentifier { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace EdgeFilesCore.Tests
                 FileIdentifier = "123456780",
                 ExecutionZoneCode = "T",
                 InterfaceControlReleaseNumber = "02.00.00",
-                GenerationDateTime = DateTime.Now,
+                GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "M",
                 ClaimDetailTotalQuantity = 1,
                 ClaimServiceLineTotalQuantity = 1,
@@ -121,7 +121,7 @@ namespace EdgeFilesCore.Tests
                 FileIdentifier = "123456789120",
                 ExecutionZoneCode = "T",
                 InterfaceControlReleaseNumber = "02.00.00",
-                GenerationDateTime = DateTime.Now,
+                GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "P",
                 ClaimDetailTotalQuantity = 2,
                 InsurancePlanPaidOnFileTotalAmount = 1000.10M
@@ -212,7 +212,7 @@ namespace EdgeFilesCore.Tests
                 FileIdentifier = "27",
                 ExecutionZoneCode = "T",
                 InterfaceControlReleaseNumber = "02.00.00",
-                GenerationDateTime = DateTime.Now.ToUniversalTime(),
+                GenerationDateTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "E",
                 InsuredMemberTotalQuantity = 2,
                 InsuredMemberProfileTotalQuantity = 3
@@ -232,8 +232,8 @@ namespace EdgeFilesCore.Tests
                     SubscriberIndicator = "S",
                     SubscriberIdentifier = "",
                     InsurancePlanIdentifier = "34567MD001555500",
-                    CoverageStartDate = new DateTime(2014, 1, 1),
-                    CoverageEndDate = new DateTime(2014, 12, 31),
+                    CoverageStartDate = new DateTime(2014, 1, 1).ToString("yyyy-MM-dd"),
+                    CoverageEndDate = new DateTime(2014, 12, 31).ToString("yyyy-MM-dd"),
                     EnrollmentMaintenanceTypeCode = "021028",
                     InsurancePlanPremiumAmount = 1000.00M,
                     RateAreaIdentifier = "212"
@@ -247,8 +247,8 @@ namespace EdgeFilesCore.Tests
                 SubscriberIndicator = "S",
                 SubscriberIdentifier = "",
                 InsurancePlanIdentifier = "34567VA001555500",
-                CoverageStartDate = new DateTime(2014, 1, 1),
-                CoverageEndDate = new DateTime(2014, 03, 31),
+                CoverageStartDate = new DateTime(2014, 1, 1).ToString("yyyy-MM-dd"),
+                CoverageEndDate = new DateTime(2014, 03, 31).ToString("yyyy-MM-dd"),
                 EnrollmentMaintenanceTypeCode = "021028",
                 InsurancePlanPremiumAmount = 945M,
                 RateAreaIdentifier = "212"
@@ -260,8 +260,8 @@ namespace EdgeFilesCore.Tests
                 SubscriberIndicator = "",
                 SubscriberIdentifier = "z42r6x99w15",
                 InsurancePlanIdentifier = "34567MD001555500",
-                CoverageStartDate = new DateTime(2014, 4, 1),
-                CoverageEndDate = new DateTime(2014, 12, 31),
+                CoverageStartDate = new DateTime(2014, 4, 1).ToString("yyyy-MM-dd"),
+                CoverageEndDate = new DateTime(2014, 12, 31).ToString("yyyy-MM-dd"),
                 EnrollmentMaintenanceTypeCode = "021028",
                 InsurancePlanPremiumAmount = 0,
                 RateAreaIdentifier = "212"
@@ -275,14 +275,14 @@ namespace EdgeFilesCore.Tests
                 {
                     RecordIdentifier = 23,
                     InsuredMemberIdentifier = "z42r6x99w15",
-                    InsuredMemberBirthDate = new DateTime(1950, 01, 01),
+                    InsuredMemberBirthDate = new DateTime(1950, 01, 01).ToString("yyyy-MM-dd"),
                     InsuredMemberGenderCode = "M",
                     IncludedInsuredMemberProfile = insMemberList1
                 },
                 new EnrollmentEnrollee{
                     RecordIdentifier = 25,
                     InsuredMemberIdentifier = "r11xtu9874j",
-                    InsuredMemberBirthDate = new DateTime(1968, 01, 17),
+                    InsuredMemberBirthDate = new DateTime(1968, 01, 17).ToString("yyyy-MM-dd"),
                     InsuredMemberGenderCode = "F",
                     IncludedInsuredMemberProfile = insMemberList2
                 }
