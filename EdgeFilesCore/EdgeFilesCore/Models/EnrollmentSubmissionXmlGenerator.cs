@@ -16,10 +16,10 @@ namespace EdgeFilesCore.Models
 
         public string GenerateXml(string filePath)
         {
-            DateTime genDate = DateTime.Now.ToUniversalTime();
-            string xmlFileName = string.Concat(HiosId, ".E.D", genDate.Date.ToString("MMddyyyy"),
-                "T", genDate.TimeOfDay.Hours.ToString(),
-                genDate.TimeOfDay.Minutes.ToString(), genDate.TimeOfDay.Seconds.ToString(),
+            DateTime fileNameGenDate = DateTime.Now.ToUniversalTime();
+            string xmlFileName = string.Concat(HiosId, ".E.D", fileNameGenDate.Date.ToString("MMddyyyy"),
+                "T", fileNameGenDate.TimeOfDay.Hours.ToString(),
+                fileNameGenDate.TimeOfDay.Minutes.ToString(), fileNameGenDate.TimeOfDay.Seconds.ToString(),
                 ".", ExecutionZone.ToString(), ".xml");
             string fullFilename = Path.Combine(filePath, xmlFileName);
             var xmlSettings = new XmlWriterSettings

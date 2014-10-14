@@ -77,7 +77,7 @@ namespace EdgeFilesAPI.Controllers
             var submission = new EnrollmentSubmission
             {
                 ExecutionZoneCode = enrolleeSubmission.ExecutionZoneCode,
-                GenerationDateTime = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss"),
+                GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 IncludedEnrollmentIssuer = issuer,
                 InsuredMemberProfileTotalQuantity = profileCount,
                 InsuredMemberTotalQuantity = enrolleeList.Count(),
