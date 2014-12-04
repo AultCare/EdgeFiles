@@ -27,9 +27,6 @@ namespace EdgeFilesAPI.Controllers
 
             foreach (var enrollee in enrolleeSubmission.EnrolleeDetails)
             {
-                // If it is not a subscriber we want to continue.
-                if (!enrollee.SubscriberInd) continue;
-
                 var e = new EnrollmentEnrollee
                 {
                     InsuredMemberIdentifier = MaskService.PasswordHash.CreateHash(enrollee.MemberId),
@@ -39,13 +36,12 @@ namespace EdgeFilesAPI.Controllers
                 };
 
                 var enrollee1 = enrollee;
-                var dependents = enrolleeSubmission.EnrolleeDetails.Where(x => x.SubscriberMemberId == enrollee1.MemberId);
+                var otherRecordsForthisMember = enrolleeSubmission.EnrolleeDetails.Where(x => x.MemberId == enrollee1.MemberId);
 
                 var dependentProfiles = new List<EnrollmentEnrolleeProfile>();
 
                 // TODO -- need to do this per enrollment period
-
-                foreach (var enrolleeDetailsViewModel in dependents)
+                foreach (var enrolleeDetailsViewModel in otherRecordsForthisMember)
                 {
                     var profile = new EnrollmentEnrolleeProfile
                     {
@@ -103,12 +99,12 @@ namespace EdgeFilesAPI.Controllers
 
             Stream result = new FileStream(filePath, FileMode.Open);
             result.Position = 0;
-            var response = new HttpResponseMessage {Content = new StreamContent(result)};
+            var response = new HttpResponseMessage { Content = new StreamContent(result) };
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
                 FileName = filename
-            }; 
+            };
             return response;
         }
     }
