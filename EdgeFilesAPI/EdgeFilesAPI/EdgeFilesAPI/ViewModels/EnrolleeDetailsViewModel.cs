@@ -18,7 +18,7 @@ namespace EdgeFilesAPI.ViewModels
         public bool SubscriberInd { get; set; }
 
         [JsonProperty(Required = Required.AllowNull)]
-        public int SubscriberMemberId { get; set; }
+        public string SubscriberMemberId { get; set; }
 
         [JsonProperty(Required = Required.Always)]
         public string PlanId { get; set; }

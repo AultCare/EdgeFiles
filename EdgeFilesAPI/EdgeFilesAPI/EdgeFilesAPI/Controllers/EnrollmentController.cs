@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using System.Xml;
 using EdgeFilesAPI.ViewModels;
 using EdgeFilesCore.Models;
 using EdgeFilesCore.Services;
@@ -16,14 +16,14 @@ namespace EdgeFilesAPI.Controllers
     public class EnrollmentController : ApiController
     {
         // POST api/<controller>
-        public string Post(EnrollmentSubmissionViewModel enrolleeSubmission)
+        public HttpResponseMessage Post(EnrollmentSubmissionViewModel enrolleeSubmission)
         {
             // 1. Accept list of enrollees
             // 2. Use Core classes to create list of enrollees/member profiles
             // 3. Create the headers, etc.
             // 4. Return XML generated
             var enrolleeList = new List<EnrollmentEnrollee>();
-            int profileCount = 0;
+            var profileCount = 0;
 
             foreach (var enrollee in enrolleeSubmission.EnrolleeDetails)
             {
@@ -38,8 +38,8 @@ namespace EdgeFilesAPI.Controllers
                     IncludedInsuredMemberProfile = new List<EnrollmentEnrolleeProfile>()
                 };
 
-                EnrolleeDetailsViewModel enrollee1 = enrollee;
-                var dependents = enrolleeSubmission.EnrolleeDetails.Where(x => x.SubscriberMemberId.ToString() == enrollee1.MemberId.ToString());
+                var enrollee1 = enrollee;
+                var dependents = enrolleeSubmission.EnrolleeDetails.Where(x => x.SubscriberMemberId == enrollee1.MemberId);
 
                 var dependentProfiles = new List<EnrollmentEnrolleeProfile>();
 
@@ -55,7 +55,7 @@ namespace EdgeFilesAPI.Controllers
                         InsurancePlanIdentifier = enrolleeDetailsViewModel.PlanId,
                         InsurancePlanPremiumAmount = enrolleeDetailsViewModel.PremiumAmount,
                         RateAreaIdentifier = String.IsNullOrEmpty(enrolleeDetailsViewModel.RatingArea) ? enrollee.RatingArea : enrolleeDetailsViewModel.RatingArea,
-                        SubscriberIdentifier = enrolleeDetailsViewModel.SubscriberInd ? "" : MaskService.PasswordHash.CreateHash(enrolleeDetailsViewModel.SubscriberMemberId.ToString()),
+                        SubscriberIdentifier = enrolleeDetailsViewModel.SubscriberInd ? "" : MaskService.PasswordHash.CreateHash(enrolleeDetailsViewModel.SubscriberMemberId),
                         SubscriberIndicator = enrolleeDetailsViewModel.SubscriberInd ? "S" : ""
                     };
                     profileCount += 1;
@@ -72,7 +72,7 @@ namespace EdgeFilesAPI.Controllers
             issuer.IssuerInsuredMemberTotalQuantity = enrolleeList.Count();
             issuer.IssuerIdentifier = enrolleeSubmission.IssuerIdentifier;
 
-            var fileId = DateTime.UtcNow.ToFileTime().ToString();
+            var fileId = DateTime.UtcNow.ToFileTime().ToString(CultureInfo.CurrentCulture);
 
             var submission = new EnrollmentSubmission
             {
@@ -86,25 +86,30 @@ namespace EdgeFilesAPI.Controllers
                 SubmissionTypeCode = enrolleeSubmission.SubmissionTypeCode
             };
 
-            EnrollmentSubmissionXmlGenerator enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator
+            var enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator
             {
                 EnrollmentSubmission = submission,
                 ExecutionZone = enrolleeSubmission.ExecutionZoneCode.First(),
                 HiosId = enrolleeSubmission.IssuerIdentifier
             };
 
-            XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
+            var xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
 
-            string path = HttpContext.Current.Request.MapPath(@"~/Output");
+            var path = HttpContext.Current.Request.MapPath(@"~/Output");
             var filePath = xmlGeneratorService.GenerateXml(path);
+            var filename = filePath.Replace(path, "");
+            filename = filename.Replace('"', ' ');
+            filename = filename.Replace('\\', ' ');
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(filePath);
-            return filePath;
-            //            var xml = doc.OuterXml;
-            //File.Delete(filePath);
-            //          xml = xml.Replace(@"\", @"""");
-            //        return new HttpResponseMessage { Content = new StringContent(xml, Encoding.UTF8, "application/xml") };
+            Stream result = new FileStream(filePath, FileMode.Open);
+            result.Position = 0;
+            var response = new HttpResponseMessage {Content = new StreamContent(result)};
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = filename
+            }; 
+            return response;
         }
     }
 }
