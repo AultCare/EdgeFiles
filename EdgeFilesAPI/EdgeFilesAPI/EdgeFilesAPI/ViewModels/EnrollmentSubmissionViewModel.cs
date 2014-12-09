@@ -16,8 +16,5 @@ namespace EdgeFilesAPI.ViewModels
 
         [JsonProperty(Required = Required.Always)]
         public List<EnrolleeDetailsViewModel> EnrolleeDetails { get; set; }
-       
-        [JsonProperty(Required = Required.Always)]
-        public string IssuerIdentifier { get; set; }
     }
 }

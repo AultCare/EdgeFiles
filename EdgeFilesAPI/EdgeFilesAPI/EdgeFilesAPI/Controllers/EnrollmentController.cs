@@ -85,7 +85,7 @@ namespace EdgeFilesAPI.Controllers
             var enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator
             {
                 EnrollmentSubmission = submission,
-                ExecutionZone = enrolleeSubmission.ExecutionZoneCode.First(),
+                ExecutionZone = enrolleeSubmission.ExecutionZoneCode,
                 HiosId = enrolleeSubmission.IssuerIdentifier
             };
 

@@ -18,7 +18,7 @@ namespace EdgeFilesCore.Tests
             var medicalClaimSubmission = new MedicalClaimSubmission
             {
                 FileIdentifier = "123456780",
-                ExecutionZoneCode = "T",
+                ExecutionZoneCode = 'T',
                 InterfaceControlReleaseNumber = "02.00.00",
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "M",
@@ -119,7 +119,7 @@ namespace EdgeFilesCore.Tests
             var pharmacyClaimsSubmission = new PharmacyClaimSubmission
             {
                 FileIdentifier = "123456789120",
-                ExecutionZoneCode = "T",
+                ExecutionZoneCode = 'T',
                 InterfaceControlReleaseNumber = "02.00.00",
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "P",
@@ -132,8 +132,8 @@ namespace EdgeFilesCore.Tests
                 RecordIdentifier = 120,
                 IssuerIdentifier = "01234",
                 IssuerClaimDetailTotalQuantity = 2,
-                IssuerPlanPaidTotalAmount = 1000.10M,
-                IncludedPharmacyClaimInsurancePlan = new PharmacyClaimInsurancePlan()
+                IssuerPlanPaidTotalAmount = 1000.10M
+                //,IncludedPharmacyClaimInsurancePlan = new PharmacyClaimInsurancePlan()
             };
 
             var pharmacyClaimInsurancePlan = new PharmacyClaimInsurancePlan
@@ -145,7 +145,7 @@ namespace EdgeFilesCore.Tests
                 IncludedPharmacyClaimDetail = new List<PharmacyClaimLevel>()
             };
 
-            pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlan = pharmacyClaimInsurancePlan;
+           // pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlan = pharmacyClaimInsurancePlan;
 
             var pharmacyClaim1 = new PharmacyClaimLevel
             {
@@ -210,7 +210,7 @@ namespace EdgeFilesCore.Tests
             var enrollmentSubmission = new EnrollmentSubmission
             {
                 FileIdentifier = "27",
-                ExecutionZoneCode = "T",
+                ExecutionZoneCode = 'T',
                 InterfaceControlReleaseNumber = "02.00.00",
                 GenerationDateTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "E",
