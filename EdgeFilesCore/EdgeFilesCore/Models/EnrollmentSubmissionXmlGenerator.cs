@@ -11,11 +11,11 @@ namespace EdgeFilesCore.Models
     {
         public EnrollmentSubmission EnrollmentSubmission { get; set; }
 
-        public string HiosId { get; set; }
+        public String HiosId { get; set; }
 
-        public char ExecutionZone { get; set; }
+        public String ExecutionZone { get; set; }
 
-        public string GenerateXml(string filePath)
+        public String GenerateXml(string filePath)
         {
             DateTime fileNameGenDate = DateTime.Now;
             string xmlFileName = string.Concat(HiosId, ".E.D", fileNameGenDate.Date.ToString("MMddyyyy"),

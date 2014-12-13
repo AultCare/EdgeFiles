@@ -8,22 +8,22 @@ namespace EdgeFilesCore.Models
     {
         [XmlElement("fileIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public string FileIdentifier { get; set; }
+        public String FileIdentifier { get; set; }
 
         [XmlElement("executionZoneCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public char ExecutionZoneCode { get; set; }
+        public String ExecutionZoneCode { get; set; }
 
         [XmlElement("interfaceControlReleaseNumber", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public string InterfaceControlReleaseNumber { get; set; }
+        public String InterfaceControlReleaseNumber { get; set; }
 
         [XmlElement("generationDateTime", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public string GenerationDateTime { get; set; }
+        public String GenerationDateTime { get; set; }
 
         [XmlElement("submissionTypeCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public string SubmissionTypeCode { get; set; }
+        public String SubmissionTypeCode { get; set; }
     }
 }

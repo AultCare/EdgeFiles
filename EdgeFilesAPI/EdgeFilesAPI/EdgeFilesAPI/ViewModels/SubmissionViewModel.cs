@@ -8,11 +8,11 @@ namespace EdgeFilesAPI.ViewModels
     {
         [XmlElement("executionZoneCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public char ExecutionZoneCode { get; set; }
+        public String ExecutionZoneCode { get; set; }
 
         [XmlElement("interfaceControlReleaseNumber", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public string InterfaceControlReleaseNumber { get; set; }
+        public String InterfaceControlReleaseNumber { get; set; }
 
         [XmlElement("generationDateTime", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
@@ -20,9 +20,9 @@ namespace EdgeFilesAPI.ViewModels
 
         [XmlElement("submissionTypeCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         [JsonProperty(Required = Required.Always)]
-        public string SubmissionTypeCode { get; set; }
+        public String SubmissionTypeCode { get; set; }
 
         [JsonProperty(Required = Required.Always)]
-        public string IssuerIdentifier { get; set; }
+        public String IssuerIdentifier { get; set; }
     }
 }

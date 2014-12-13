@@ -12,7 +12,7 @@ namespace EdgeFilesCore.Models
 
         public string HiosId { get; set; }
 
-        public char ExecutionZone { get; set; }
+        public String ExecutionZone { get; set; }
 
         public string GenerateXml(string filePath)
         {

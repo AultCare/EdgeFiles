@@ -12,7 +12,7 @@ namespace EdgeFilesCore.Models
 
         public string HiosId { get; set; }
 
-        public char ExecutionZone { get; set; }
+        public String ExecutionZone { get; set; }
 
         public string GenerateXml(string filePath)
         {
@@ -35,6 +35,19 @@ namespace EdgeFilesCore.Models
             const string prefix = "ns1";
             var ns = new XmlSerializerNamespaces();
             ns.Add(prefix, nsUrl);
+
+            // Set record IDs
+
+            int recordId = 1;
+            PharmacyClaimsSubmission.IncludedPharmacyClaimIssuer.RecordIdentifier = recordId++;
+
+            foreach (var includedInsuredMember in PharmacyClaimsSubmission.IncludedPharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlans)
+            {
+                includedInsuredMember.RecordIdentifier = recordId++;
+                var insMem = includedInsuredMember;
+                insMem.IncludedPharmacyClaimDetail.ForEach(x => x.RecordIdentifier = recordId++);
+            }
+
 
             using (XmlWriter xmlWriter = XmlWriter.Create(fullFilename, xmlSettings))
             {

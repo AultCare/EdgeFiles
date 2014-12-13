@@ -47,9 +47,14 @@ namespace EdgeFilesAPI.Controllers
             var issuer = new PharmacyClaimIssuer
             {
                 IssuerIdentifier = pharmacySubmission.IssuerIdentifier,
-                //RecordIdentifier = 
-                IncludedPharmacyClaimInsurancePlans = planClaimCollection
-            };
+                IncludedPharmacyClaimInsurancePlans = planClaimCollection,
+                IssuerClaimDetailTotalQuantity = planClaimCollection.Count(),
+                IssuerPlanPaidTotalAmount = pharmacySubmission.PharmacyClaims.Sum(x => x.PolicyPaidAmount)
+                };
+            //foreach (var insurancePlan in issuer.IncludedPharmacyClaimInsurancePlans)
+            //{
+                
+            //}
 
             var submission = new PharmacyClaimSubmission
             {
@@ -58,7 +63,7 @@ namespace EdgeFilesAPI.Controllers
                 IncludedPharmacyClaimIssuer = issuer,
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 FileIdentifier = fileId.Substring(fileId.Length - 12, 12),
-                //InsurancePlanPaidOnFileTotalAmount = null,
+                InsurancePlanPaidOnFileTotalAmount = pharmacySubmission.PharmacyClaims.Sum(x => x.PolicyPaidAmount),
                 InterfaceControlReleaseNumber = pharmacySubmission.InterfaceControlReleaseNumber,
                 SubmissionTypeCode = pharmacySubmission.SubmissionTypeCode
             };

@@ -18,7 +18,7 @@ namespace EdgeFilesCore.Tests
             var medicalClaimSubmission = new MedicalClaimSubmission
             {
                 FileIdentifier = "123456780",
-                ExecutionZoneCode = 'T',
+                ExecutionZoneCode = "T",
                 InterfaceControlReleaseNumber = "02.00.00",
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "M",
@@ -103,7 +103,7 @@ namespace EdgeFilesCore.Tests
 
             medicalClaimSubmissionXmlGenerator.MedicalClaimSubmission = medicalClaimSubmission;
             medicalClaimSubmissionXmlGenerator.HiosId = "12345";
-            medicalClaimSubmissionXmlGenerator.ExecutionZone = 'T';
+            medicalClaimSubmissionXmlGenerator.ExecutionZone = "T";
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(medicalClaimSubmissionXmlGenerator);
 
             string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -119,7 +119,7 @@ namespace EdgeFilesCore.Tests
             var pharmacyClaimsSubmission = new PharmacyClaimSubmission
             {
                 FileIdentifier = "123456789120",
-                ExecutionZoneCode = 'T',
+                ExecutionZoneCode = "T",
                 InterfaceControlReleaseNumber = "02.00.00",
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "P",
@@ -195,7 +195,7 @@ namespace EdgeFilesCore.Tests
             pharmacyClaimsSubmissionXmlGenerator.PharmacyClaimsSubmission = pharmacyClaimsSubmission;
 
             pharmacyClaimsSubmissionXmlGenerator.HiosId = "12345";
-            pharmacyClaimsSubmissionXmlGenerator.ExecutionZone = 'T';
+            pharmacyClaimsSubmissionXmlGenerator.ExecutionZone = "T";
             
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(pharmacyClaimsSubmissionXmlGenerator);
             string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -210,7 +210,7 @@ namespace EdgeFilesCore.Tests
             var enrollmentSubmission = new EnrollmentSubmission
             {
                 FileIdentifier = "27",
-                ExecutionZoneCode = 'T',
+                ExecutionZoneCode = "T",
                 InterfaceControlReleaseNumber = "02.00.00",
                 GenerationDateTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = "E",
@@ -292,7 +292,7 @@ namespace EdgeFilesCore.Tests
             enrollmentSubmissionXml.EnrollmentSubmission = enrollmentSubmission;
 
             enrollmentSubmissionXml.HiosId = "12345";
-            enrollmentSubmissionXml.ExecutionZone = 'T';
+            enrollmentSubmissionXml.ExecutionZone = "T";
 
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
 

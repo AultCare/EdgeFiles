@@ -1,9 +1,11 @@
-﻿namespace EdgeFilesCore.Models
+﻿using System;
+
+namespace EdgeFilesCore.Models
 {
     public interface IXmlGenerator
     {
-        string GenerateXml(string filePath);
-        string HiosId { get; set; }
-        char ExecutionZone { get; set; }
+        String GenerateXml(string filePath);
+        String HiosId { get; set; }
+        String ExecutionZone { get; set; }
     }
 }
