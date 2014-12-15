@@ -25,7 +25,7 @@ namespace EdgeFilesCore.Tests
                 ClaimDetailTotalQuantity = 1,
                 ClaimServiceLineTotalQuantity = 1,
                 InsurancePlanPaidOnFileTotalAmount = 715.00M,
-                IncludedMedicalClaimIssuer = new List<MedicalClaimIssuer>()
+                IncludedMedicalClaimIssuer = new MedicalClaimIssuer()
             };
 
             var medicalClaimIssuer = new MedicalClaimIssuer
@@ -99,7 +99,7 @@ namespace EdgeFilesCore.Tests
             medicalClaimDetail.IncludedDetailServiceLine = detailServiceLine;
             medicalClaimPlan.IncludedMedicalClaimDetail.Add(medicalClaimDetail);
             medicalClaimIssuer.IncludedMedicalClaimPlan.Add(medicalClaimPlan);
-            medicalClaimSubmission.IncludedMedicalClaimIssuer.Add(medicalClaimIssuer);
+            medicalClaimSubmission.IncludedMedicalClaimIssuer = medicalClaimIssuer;
 
             medicalClaimSubmissionXmlGenerator.MedicalClaimSubmission = medicalClaimSubmission;
             medicalClaimSubmissionXmlGenerator.HiosId = "12345";
@@ -145,7 +145,7 @@ namespace EdgeFilesCore.Tests
                 IncludedPharmacyClaimDetail = new List<PharmacyClaimLevel>()
             };
 
-           // pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlan = pharmacyClaimInsurancePlan;
+            // pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlan = pharmacyClaimInsurancePlan;
 
             var pharmacyClaim1 = new PharmacyClaimLevel
             {
@@ -196,7 +196,7 @@ namespace EdgeFilesCore.Tests
 
             pharmacyClaimsSubmissionXmlGenerator.HiosId = "12345";
             pharmacyClaimsSubmissionXmlGenerator.ExecutionZone = "T";
-            
+
             XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(pharmacyClaimsSubmissionXmlGenerator);
             string path = AppDomain.CurrentDomain.BaseDirectory;
             xmlGeneratorService.GenerateXml(path);

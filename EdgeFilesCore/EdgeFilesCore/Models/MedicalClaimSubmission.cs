@@ -16,6 +16,6 @@ namespace EdgeFilesCore.Models
         public decimal InsurancePlanPaidOnFileTotalAmount { get; set; }
 
         [XmlElement("includedMedicalClaimIssuer", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public List<MedicalClaimIssuer> IncludedMedicalClaimIssuer { get; set; }
+        public MedicalClaimIssuer IncludedMedicalClaimIssuer { get; set; }
     }
 }

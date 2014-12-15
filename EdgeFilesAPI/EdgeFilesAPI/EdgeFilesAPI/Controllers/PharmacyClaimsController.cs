@@ -25,8 +25,7 @@ namespace EdgeFilesAPI.Controllers
             var fileId = DateTime.UtcNow.ToFileTime().ToString(CultureInfo.CurrentCulture);
 
             var planClaimCollection = new List<PharmacyClaimInsurancePlan>();
-
-            // todo--split out by planid
+             
             foreach (var claims in pharmacySubmission.PharmacyClaims.GroupBy(x => x.PlanId.ToLower()))
             {
                 var pharmclaims = Mapper.Map<List<PharmacyClaimLevel>>(claims);

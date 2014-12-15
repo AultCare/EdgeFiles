@@ -1,6 +1,16 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
+using AutoMapper;
 using EdgeFilesAPI.ViewModels;
+using EdgeFilesCore.Models;
+using EdgeFilesCore.Services;
 
 namespace EdgeFilesAPI.Controllers
 {
@@ -9,76 +19,75 @@ namespace EdgeFilesAPI.Controllers
         // POST api/<controller>
         public HttpResponseMessage Post(MedicalClaimsSubmissionViewModel medicalSubmission)
         {
-            return null;
+            Mapper.CreateMap<MedicalClaimsDetailViewModel, MedicalClaimDetail>();
+            var fileId = DateTime.UtcNow.ToFileTime().ToString(CultureInfo.CurrentCulture);
 
-            //// todo -- move this
-            //Mapper.CreateMap<PharmacyClaimLevelViewModel, PharmacyClaimLevel>();
+            var planClaimCollection = new List<MedicalClaimPlan>();
 
-            //var fileId = DateTime.UtcNow.ToFileTime().ToString(CultureInfo.CurrentCulture);
+            foreach (var claims in medicalSubmission.MedicalClaims.GroupBy(x => x.PlanId.ToLower()))
+            {
+                var medicalClaims = Mapper.Map<List<MedicalClaimDetail>>(claims);
 
-            //var planClaimCollection = new List<PharmacyClaimInsurancePlan>();
+                var planClaims = new MedicalClaimPlan
+                {
+                    IncludedMedicalClaimDetail = medicalClaims,
+                    InsurancePlanClaimDetailTotalQuantity = medicalClaims.Count(),
+                    InsurancePlanIdentifier = claims.First().PlanId,
+                    InsurancePlanPaidTotalAmount = medicalClaims.Sum(x => x.PolicyPaidTotalAmount),
+                    //InsurancePlanClaimServiceLineTotalQuantity =
+                    RecordIdentifier = 0
+                };
 
-            //// todo--split out by planid
-            //foreach (var claims in pharmacySubmission.PharmacyClaims.GroupBy(x => x.PlanId.ToLower()))
-            //{
-            //    var pharmclaims = Mapper.Map<List<PharmacyClaimLevel>>(claims);
-            //    //pharmClaims.Add(pharmclaim);
+                planClaimCollection.Add(planClaims);
+            }
 
-            //    var planClaims = new PharmacyClaimInsurancePlan
-            //    {
-            //        IncludedPharmacyClaimDetail = pharmclaims,
-            //        InsurancePlanClaimDetailTotalQuantity = pharmclaims.Count(),
-            //        InsurancePlanIdentifier = claims.First().PlanId,
-            //        PolicyPaidTotalAmount = pharmclaims.Sum(x => x.PolicyPaidAmount),
-            //        RecordIdentifier = 0
-            //    };
+            var medicalClaimIssuer = new MedicalClaimIssuer
+            {
+                RecordIdentifier = 0,
+                IssuerIdentifier = medicalSubmission.IssuerIdentifier,
+                IncludedMedicalClaimPlan = planClaimCollection,
+                IssuerPlanPaidTotalAmount = planClaimCollection.Sum(x => x.InsurancePlanPaidTotalAmount),
+                IssuerClaimDetailTotalQuantity = planClaimCollection.Count(), //todo
+                IssuerClaimServiceLineTotalQuantity = planClaimCollection.Count() //todo
+            };
 
-            //    planClaimCollection.Add(planClaims);
-            //}
+            var submission = new MedicalClaimSubmission
+            {
+                ExecutionZoneCode = medicalSubmission.ExecutionZoneCode,
+                ClaimDetailTotalQuantity = medicalSubmission.MedicalClaims.Count(),
+                IncludedMedicalClaimIssuer = medicalClaimIssuer,
+                GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                FileIdentifier = fileId.Substring(fileId.Length - 12, 12),
+                InsurancePlanPaidOnFileTotalAmount = medicalSubmission.MedicalClaims.Sum(x => x.PolicyPaidAmount),
+                InterfaceControlReleaseNumber = medicalSubmission.InterfaceControlReleaseNumber,
+                SubmissionTypeCode = medicalSubmission.SubmissionTypeCode
+            };
 
-            //var issuer = new PharmacyClaimIssuer
-            //{
-            //    IssuerIdentifier = pharmacySubmission.IssuerIdentifier,
-            //    //RecordIdentifier =
-            //    IncludedPharmacyClaimInsurancePlans = planClaimCollection
-            //};
+            var medicalSubmissionXml = new MedicalClaimSubmissionXmlGenerator
+            {
+                ExecutionZone = medicalSubmission.ExecutionZoneCode,
+                HiosId = medicalSubmission.IssuerIdentifier,
+                MedicalClaimSubmission = submission
+            };
 
-            //var submission = new PharmacyClaimSubmission
-            //{
-            //    ExecutionZoneCode = pharmacySubmission.ExecutionZoneCode,
-            //    ClaimDetailTotalQuantity = pharmacySubmission.PharmacyClaims.Count(),
-            //    IncludedPharmacyClaimIssuer = issuer,
-            //    GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-            //    FileIdentifier = fileId.Substring(fileId.Length - 12, 12),
-            //    //InsurancePlanPaidOnFileTotalAmount = null,
-            //    InterfaceControlReleaseNumber = pharmacySubmission.InterfaceControlReleaseNumber,
-            //    SubmissionTypeCode = pharmacySubmission.SubmissionTypeCode
-            //};
+            // Return file
+            var xmlGeneratorService = new XmlGeneratorService(medicalSubmissionXml);
 
-            //var pharmacySubmissionXml = new PharmacyClaimSubmissionXmlGenerator
-            //{
-            //    PharmacyClaimsSubmission = submission,
-            //    ExecutionZone = pharmacySubmission.ExecutionZoneCode,
-            //    HiosId = pharmacySubmission.IssuerIdentifier
-            //};
+            var path = HttpContext.Current.Request.MapPath(@"~/Output");
+            var filePath = xmlGeneratorService.GenerateXml(path);
+            var filename = filePath.Replace(path, "");
+            filename = filename.Replace('"', ' ');
+            filename = filename.Replace('\\', ' ');
 
-            //var xmlGeneratorService = new XmlGeneratorService(pharmacySubmissionXml);
-
-            //var path = HttpContext.Current.Request.MapPath(@"~/Output");
-            //var filePath = xmlGeneratorService.GenerateXml(path);
-            //var filename = filePath.Replace(path, "");
-            //filename = filename.Replace('"', ' ');
-            //filename = filename.Replace('\\', ' ');
-
-            //Stream result = new FileStream(filePath, FileMode.Open);
-            //result.Position = 0;
-            //var response = new HttpResponseMessage { Content = new StreamContent(result) };
-            //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            //response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            //{
-            //    FileName = filename
-            //};
-            //return response;
+            Stream result = new FileStream(filePath, FileMode.Open);
+            result.Position = 0;
+            var response = new HttpResponseMessage { Content = new StreamContent(result) };
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = filename
+            };
+            return response;
         }
     }
 }
