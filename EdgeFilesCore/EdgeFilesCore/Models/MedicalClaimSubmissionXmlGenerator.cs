@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -18,9 +19,9 @@ namespace EdgeFilesCore.Models
         {
             DateTime genDate = DateTime.Now.ToUniversalTime();
             string xmlFileName = string.Concat(HiosId, ".M.D", genDate.Date.ToString("MMddyyyy"),
-                "T", genDate.TimeOfDay.Hours.ToString(),
-                genDate.TimeOfDay.Minutes.ToString(), genDate.TimeOfDay.Seconds.ToString(),
-                ".", ExecutionZone.ToString(), ".xml");
+                "T", genDate.TimeOfDay.Hours.ToString(CultureInfo.CurrentCulture),
+                genDate.TimeOfDay.Minutes.ToString(CultureInfo.CurrentCulture), genDate.TimeOfDay.Seconds.ToString(CultureInfo.CurrentCulture),
+                ".", ExecutionZone.ToString(CultureInfo.CurrentCulture), ".xml");
             string fullFilename = Path.Combine(filePath, xmlFileName);
             var xmlSettings = new XmlWriterSettings
             {
@@ -29,6 +30,26 @@ namespace EdgeFilesCore.Models
                 Encoding = new UTF8Encoding(false),
                 OmitXmlDeclaration = true
             };
+
+            // Set record IDs
+            int recordId = 2;
+
+            foreach (var plan in MedicalClaimSubmission.IncludedMedicalClaimIssuer.IncludedMedicalClaimPlan)
+            {
+                plan.RecordIdentifier = recordId++;
+                var p = plan;
+
+                foreach (var claimDetail in p.IncludedMedicalClaimDetail)
+                {
+                    claimDetail.RecordIdentifier = recordId++;
+
+                    var cd = claimDetail;
+                    foreach (var detailServiceLine in cd.IncludedDetailServiceLine.IncludedDetailServiceLine)
+                    {
+                        detailServiceLine.RecordIdentifier = recordId++;
+                    }
+                }
+            }
 
             //Create namespace for the output
             const string nsUrl = "http://vo.edge.fm.cms.hhs.gov";

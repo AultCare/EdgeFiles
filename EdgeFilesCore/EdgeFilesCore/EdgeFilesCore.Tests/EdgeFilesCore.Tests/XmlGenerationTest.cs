@@ -61,27 +61,27 @@ namespace EdgeFilesCore.Tests
                 DiagnosisTypeCode = "01",
                 DiagnosisCode = new List<string> { "5559", "v1272", "1539" },
                 DischargeStatusCode = "30",
-                StatementCoverFromDate = new DateTime(2014, 03, 15),
-                StatementCoverToDate = new DateTime(2014, 03, 15),
+                StatementCoverFromDate = new DateTime(2014, 03, 15).ToString("yyyy-MM-dd"),
+                StatementCoverToDate = new DateTime(2014, 03, 15).ToString("yyyy-MM-dd"),
                 BillingProviderIdQualifier = "99",
                 BillingProviderIdentifier = "808401234567893",
-                IssuerClaimPaidDate = new DateTime(2014, 4, 1),
+                IssuerClaimPaidDate = new DateTime(2014, 4, 1).ToString("yyyy-MM-dd"),
                 AllowedTotalAmount = 865.00M,
                 PolicyPaidTotalAmount = 715M,
-                DerivedServiceClaimIndicator = "N"
+                //  DerivedServiceClaimIndicator = "N"
             };
 
-            var detailServiceLine = new MedicalClaimDetailServiceLine
-            {
-                IncludedDetailServiceLine = new List<MedicalClaimServiceLine>()
-            };
+            //var detailServiceLine = new MedicalClaimDetailServiceLine
+            //{
+            //    IncludedDetailServiceLine = new List<MedicalClaimServiceLine>()
+            //};
 
             var medicalClaimSvcLine = new MedicalClaimServiceLine
             {
                 RecordIdentifier = 4,
                 ServiceLineNumber = 1,
-                ServiceFromDate = new DateTime(2014, 03, 15),
-                ServiceToDate = new DateTime(2014, 03, 15),
+                ServiceFromDate = new DateTime(2014, 03, 15).ToString("yyyy-MM-dd"),
+                ServiceToDate = new DateTime(2014, 03, 15).ToString("yyyy-MM-dd"),
                 RevenueCode = "0490",
                 ServiceTypeCode = "03",
                 ServiceCode = "45738",
@@ -92,11 +92,10 @@ namespace EdgeFilesCore.Tests
                 AllowedAmount = 865M,
                 PolicyPaidAmount = 715M,
                 DerivedServiceClaimIndicator = "N"
-
             };
 
-            detailServiceLine.IncludedDetailServiceLine.Add(medicalClaimSvcLine);
-            medicalClaimDetail.IncludedDetailServiceLine = detailServiceLine;
+            //detailServiceLine.IncludedDetailServiceLine.Add(medicalClaimSvcLine);
+            // medicalClaimDetail.IncludedDetailServiceLine = detailServiceLine;
             medicalClaimPlan.IncludedMedicalClaimDetail.Add(medicalClaimDetail);
             medicalClaimIssuer.IncludedMedicalClaimPlan.Add(medicalClaimPlan);
             medicalClaimSubmission.IncludedMedicalClaimIssuer = medicalClaimIssuer;
@@ -153,8 +152,8 @@ namespace EdgeFilesCore.Tests
                 InsuredMemberIdentifier = "z42r6x99w15",
                 ClaimIdentifier = "12323920140315A2",
                 ClaimProcessedDateTime = new DateTime(2013, 3, 15),
-                PrescriptionFillDate = new DateTime(2014, 3, 1),
-                IssuerClaimPaidDate = new DateTime(2014, 3, 1),
+                PrescriptionFillDate = new DateTime(2014, 3, 1).ToString("yyyy-MM-dd"),
+                IssuerClaimPaidDate = new DateTime(2014, 3, 1).ToString("yyyy-MM-dd"),
                 PrescriptionServiceReferenceNumber = "01",
                 NationalDrugCode = "1659084390",
                 DispensingProviderIdQualifier = "XX",
@@ -173,8 +172,8 @@ namespace EdgeFilesCore.Tests
                 InsuredMemberIdentifier = "r11xtu9874j",
                 ClaimIdentifier = "12324020140215A1",
                 ClaimProcessedDateTime = new DateTime(2013, 2, 15),
-                PrescriptionFillDate = new DateTime(2014, 2, 1),
-                IssuerClaimPaidDate = new DateTime(2014, 2, 1),
+                PrescriptionFillDate = new DateTime(2014, 2, 1).ToString("yyyy-MM-dd"),
+                IssuerClaimPaidDate = new DateTime(2014, 2, 1).ToString("yyyy-MM-dd"),
                 PrescriptionServiceReferenceNumber = "01",
                 NationalDrugCode = "6353923479",
                 DispensingProviderIdQualifier = "XX",

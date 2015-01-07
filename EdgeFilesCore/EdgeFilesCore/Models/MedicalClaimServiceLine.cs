@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace EdgeFilesCore.Models
 {
-    [XmlRoot(ElementName = "includedMedicalClaimPlan", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+    [XmlRoot(ElementName = "includedServiceLine", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
     public class MedicalClaimServiceLine
     {
         [XmlElement("recordIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
@@ -14,10 +14,10 @@ namespace EdgeFilesCore.Models
         public int ServiceLineNumber { get; set; }
 
         [XmlElement("serviceFromDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime ServiceFromDate { get; set; }
+        public String ServiceFromDate { get; set; }
 
         [XmlElement("serviceToDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime ServiceToDate { get; set; }
+        public String ServiceToDate { get; set; }
 
         [XmlElement("revenueCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string RevenueCode { get; set; }

@@ -41,10 +41,10 @@ namespace EdgeFilesCore.Models
         public string DischargeStatusCode { get; set; }
 
         [XmlElement("statementCoverFromDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime StatementCoverFromDate { get; set; }
+        public String StatementCoverFromDate { get; set; }
 
         [XmlElement("statementCoverToDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime StatementCoverToDate { get; set; }
+        public String StatementCoverToDate { get; set; }
 
         [XmlElement("billingProviderIDQualifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string BillingProviderIdQualifier { get; set; }
@@ -53,7 +53,7 @@ namespace EdgeFilesCore.Models
         public string BillingProviderIdentifier { get; set; }
 
         [XmlElement("issuerClaimPaidDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime IssuerClaimPaidDate { get; set; }
+        public String IssuerClaimPaidDate { get; set; }
 
         [XmlElement("allowedTotalAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public decimal AllowedTotalAmount { get; set; }
@@ -66,8 +66,5 @@ namespace EdgeFilesCore.Models
 
         [XmlElement("includedDetailServiceLine", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public MedicalClaimDetailServiceLine IncludedDetailServiceLine { get; set; }
-
-        [XmlElement("includedServiceLine", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public List<MedicalClaimServiceLine> IncludedServiceLine { get; set; }
     }
 }

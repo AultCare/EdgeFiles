@@ -23,13 +23,13 @@ namespace EdgeFilesAPI.ViewModels
         ///     ICD specifies this as a Date field.
         /// </summary>
         [XmlElement("prescriptionFillDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime PrescriptionFillDate { get; set; }
+        public String PrescriptionFillDate { get; set; }
 
         /// <summary>
         ///     ICD specifies this as a Date field.
         /// </summary>
         [XmlElement("issuerClaimPaidDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public DateTime IssuerClaimPaidDate { get; set; }
+        public String IssuerClaimPaidDate { get; set; }
 
         [XmlElement("prescriptionServiceReferenceNumber", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string PrescriptionServiceReferenceNumber { get; set; }

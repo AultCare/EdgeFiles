@@ -25,7 +25,19 @@ namespace EdgeFilesAPI.Controllers
             var fileId = DateTime.UtcNow.ToFileTime().ToString(CultureInfo.CurrentCulture);
 
             var planClaimCollection = new List<PharmacyClaimInsurancePlan>();
-             
+
+            foreach (var claim in pharmacySubmission.PharmacyClaims)
+            {
+                claim.PrescriptionFillDate = DateTime.Parse(claim.PrescriptionFillDate).ToString("yyyy-MM-dd");
+                claim.IssuerClaimPaidDate = DateTime.Parse(claim.IssuerClaimPaidDate).ToString("yyyy-MM-dd");
+                claim.InsuredMemberIdentifier = MaskService.PasswordHash.CreateHash(claim.InsuredMemberIdentifier);
+                claim.ClaimIdentifier = MaskService.PasswordHash.CreateHash(claim.ClaimIdentifier);
+            }
+
+            //pharmacySubmission.PharmacyClaims
+            //    .ForEach(x => x.PrescriptionFillDate = DateTime.Parse(x.PrescriptionFillDate).ToString("yyyy-MM-dd"));
+            //pharmacySubmission.PharmacyClaims.ForEach(x => x.IssuerClaimPaidDate = DateTime.Parse(x.IssuerClaimPaidDate).ToString("yyyy-MM-dd"));
+
             foreach (var claims in pharmacySubmission.PharmacyClaims.GroupBy(x => x.PlanId.ToLower()))
             {
                 var pharmclaims = Mapper.Map<List<PharmacyClaimLevel>>(claims);
@@ -47,12 +59,11 @@ namespace EdgeFilesAPI.Controllers
             {
                 IssuerIdentifier = pharmacySubmission.IssuerIdentifier,
                 IncludedPharmacyClaimInsurancePlans = planClaimCollection,
-                IssuerClaimDetailTotalQuantity = planClaimCollection.Count(),
+                IssuerClaimDetailTotalQuantity = planClaimCollection.Sum(x => x.InsurancePlanClaimDetailTotalQuantity),
                 IssuerPlanPaidTotalAmount = pharmacySubmission.PharmacyClaims.Sum(x => x.PolicyPaidAmount)
-                };
+            };
             //foreach (var insurancePlan in issuer.IncludedPharmacyClaimInsurancePlans)
             //{
-                
             //}
 
             var submission = new PharmacyClaimSubmission

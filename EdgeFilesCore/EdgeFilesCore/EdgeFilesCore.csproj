@@ -50,7 +50,9 @@
     <Compile Include="Models\EnrollmentEnrolleeProfile.cs" />
     <Compile Include="Models\IXmlGenerator.cs" />
     <Compile Include="Models\MedicalClaimDetail.cs" />
-    <Compile Include="Models\MedicalClaimDetailServiceLine.cs" />
+    <Compile Include="Models\MedicalClaimDetailServiceLine.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\MedicalClaimIssuer.cs" />
     <Compile Include="Models\MedicalClaimPlan.cs" />
     <Compile Include="Models\MedicalClaimServiceLine.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Services\XmlGeneratorService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MedicalSubmissionClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

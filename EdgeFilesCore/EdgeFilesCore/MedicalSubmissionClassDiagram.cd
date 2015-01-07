@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="EdgeFilesCore.Models.MedicalClaimSubmission">
+    <Position X="4" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAIAAAAAAAAAAAIQ=</HashCode>
+      <FileName>Models\MedicalClaimSubmission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EdgeFilesCore.Models.Submission">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQEAAAAjAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Submission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EdgeFilesCore.Models.MedicalClaimIssuer">
+    <Position X="4.25" Y="2.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAIAUAAAAAAAAAACAAEAAAAAA=</HashCode>
+      <FileName>Models\MedicalClaimIssuer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EdgeFilesCore.Models.MedicalClaimPlan">
+    <Position X="4.5" Y="4.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAhAAAAAQAAAIIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\MedicalClaimPlan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EdgeFilesCore.Models.MedicalClaimDetail">
+    <Position X="4.75" Y="7" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAQAAAAAQAEAASAARKEEGAAAAAAAAAEACAgIQ=</HashCode>
+      <FileName>Models\MedicalClaimDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EdgeFilesCore.Models.MedicalClaimDetailServiceLine">
+    <Position X="5" Y="12" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\MedicalClaimDetailServiceLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EdgeFilesCore.Models.MedicalClaimServiceLine">
+    <Position X="5.25" Y="13.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQQAAgAAAAAAADAAQAQASgAIAAAAAAAAIAAAQ=</HashCode>
+      <FileName>Models\MedicalClaimServiceLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
