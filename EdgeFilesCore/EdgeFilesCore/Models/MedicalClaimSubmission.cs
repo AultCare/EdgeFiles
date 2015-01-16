@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace EdgeFilesCore.Models
 {
@@ -12,7 +13,7 @@ namespace EdgeFilesCore.Models
         public int ClaimServiceLineTotalQuantity { get; set; }
 
         [XmlElement("insurancePlanPaidOnFileTotalAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public decimal InsurancePlanPaidOnFileTotalAmount { get; set; }
+        public String InsurancePlanPaidOnFileTotalAmount { get; set; }
 
         [XmlElement("includedMedicalClaimIssuer", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public MedicalClaimIssuer IncludedMedicalClaimIssuer { get; set; }

@@ -46,7 +46,7 @@ namespace EdgeFilesAPI.Controllers
                 {
                     InsurancePlanClaimDetailTotalQuantity = medicalClaims.Count(),
                     InsurancePlanIdentifier = planClaims.First().PlanId,
-                    InsurancePlanPaidTotalAmount = Math.Round(medicalClaims.Sum(x => x.PolicyPaidTotalAmount), 2),
+                    InsurancePlanPaidTotalAmount = medicalClaims.Sum(x => Decimal.Parse(x.PolicyPaidTotalAmount)).ToString("N2").Replace(",", ""),
                     IncludedMedicalClaimDetail = new List<MedicalClaimDetail>(),
                     RecordIdentifier = 1,
                     //InsurancePlanClaimServiceLineTotalQuantity =
@@ -70,13 +70,13 @@ namespace EdgeFilesAPI.Controllers
 
                         #region Medical Claim Service Line
 
-                        foreach (var claimLine in indClaim.MedicalClaimDetailServiceLines)
+                        foreach (var claimLine in indClaim.MedicalClaimDetailServiceLines.OrderBy(x => x.ServiceLineNumber))
                         {
                             mcslList.Add(new MedicalClaimServiceLine
                             {
-                                AllowedAmount = claimLine.AllowedAmount,
+                                AllowedAmount = claimLine.AllowedAmount.ToString("N2").Replace(",", ""),
                                 DerivedServiceClaimIndicator = claimLine.DerivedServiceClaimIndicator,
-                                PolicyPaidAmount = Math.Round(claimLine.PolicyPaidAmount, 2),
+                                PolicyPaidAmount = claimLine.PolicyPaidAmount.ToString("N2").Replace(",", ""),
                                 RenderingProviderIdQualifier = claimLine.RenderingProviderIdQualifier,
                                 RenderingProviderIdentifier = claimLine.RenderingProviderIdentifier,
                                 RevenueCode = claimLine.RevenueCode,
@@ -85,7 +85,7 @@ namespace EdgeFilesAPI.Controllers
                                 ServiceFromDate = claimLine.ServiceFromDate.ToString("yyyy-MM-dd"),
                                 ServiceToDate = claimLine.ServiceToDate.ToString("yyyy-MM-dd"),
                                 ServiceModifierCode = claimLine.ServiceModifierCode,
-                                ServiceTypeCode = claimLine.ServiceTypeCode,
+                                ServiceTypeCode = claimLine.ServiceTypeCode.Length == 2 ? claimLine.ServiceTypeCode : claimLine.ServiceTypeCode.PadLeft(2, '0'),
                                 ServiceLineNumber = claimLine.ServiceLineNumber
                             });
                         }
@@ -98,7 +98,7 @@ namespace EdgeFilesAPI.Controllers
                         var medicalClaimDetail = new MedicalClaimDetail
                         {
                             IncludedDetailServiceLine = new MedicalClaimDetailServiceLine { IncludedDetailServiceLine = mcslList },
-                            AllowedTotalAmount = Math.Round(mcslList.Sum(x => x.AllowedAmount), 2),
+                            AllowedTotalAmount = mcslList.Sum(x => Decimal.Parse(x.AllowedAmount)).ToString("N2").Replace(",", ""),
                             BillTypeCode = indClaim.BillTypeCode, // double check that all in a group are the same
                             BillingProviderIdQualifier = indClaim.BillingProviderIdQualifier,
                             BillingProviderIdentifier = indClaim.BillingProviderIdentifier,
@@ -106,14 +106,14 @@ namespace EdgeFilesAPI.Controllers
                             ClaimProcessedDateTime = indClaim.ClaimProcessedDateTime,
                             DerivedServiceClaimIndicator = indClaim.DerivedServiceClaimIndicator,
                             DiagnosisCode = indClaim.DiagnosisCode,
-                            DiagnosisTypeCode = indClaim.DiagnosisTypeCode,
+                            DiagnosisTypeCode = indClaim.DiagnosisTypeCode.Length == 2 ? indClaim.DiagnosisTypeCode : indClaim.DiagnosisTypeCode.PadLeft(2, '0'),
                             DischargeStatusCode = indClaim.DischargeStatusCode,
                             FormTypeCode = indClaim.FormTypeCode,
                             VoidReplaceCode = indClaim.VoidReplaceCode,
                             InsuredMemberIdentifier = indClaim.InsuredMemberIdentifier,
                             IssuerClaimPaidDate = indClaim.IssuerClaimPaidDate.ToString("yyyy-MM-dd"),
                             OriginalClaimIdentifier = indClaim.OriginalClaimIdentifier,
-                            PolicyPaidTotalAmount = Math.Round(mcslList.Sum(x => x.PolicyPaidAmount), 2),
+                            PolicyPaidTotalAmount = mcslList.Sum(x => Decimal.Parse(x.PolicyPaidAmount)).ToString("N2").Replace(",", ""),
                             StatementCoverFromDate = indClaim.StatementCoverFromDate.ToString("yyyy-MM-dd"),
                             StatementCoverToDate = indClaim.StatementCoverToDate.ToString("yyyy-MM-dd")
                             //,DerivedServiceClaimIndicator = indClaim.DerivedServiceClaimIndicator,
@@ -135,7 +135,7 @@ namespace EdgeFilesAPI.Controllers
                 RecordIdentifier = 1,
                 IssuerIdentifier = medicalSubmission.IssuerIdentifier,
                 IncludedMedicalClaimPlan = planClaimCollection,
-                IssuerPlanPaidTotalAmount = Math.Round(planClaimCollection.Sum(x => x.InsurancePlanPaidTotalAmount), 2),
+                IssuerPlanPaidTotalAmount = planClaimCollection.Sum(x => Decimal.Parse(x.InsurancePlanPaidTotalAmount)).ToString("N2").Replace(",", ""),
                 IssuerClaimDetailTotalQuantity = medicalSubmission.MedicalClaims.Count(), //todo
                 IssuerClaimServiceLineTotalQuantity = serviceLineCount
             };
@@ -153,7 +153,7 @@ namespace EdgeFilesAPI.Controllers
                 FileIdentifier = fileId.Substring(fileId.Length - 12, 12),
                 InterfaceControlReleaseNumber = medicalSubmission.InterfaceControlReleaseNumber,
                 SubmissionTypeCode = medicalSubmission.SubmissionTypeCode,
-                InsurancePlanPaidOnFileTotalAmount = Math.Round(medicalClaimIssuer.IssuerPlanPaidTotalAmount, 2),
+                InsurancePlanPaidOnFileTotalAmount = medicalClaimIssuer.IssuerPlanPaidTotalAmount,
                 ClaimServiceLineTotalQuantity = medicalClaimIssuer.IssuerClaimServiceLineTotalQuantity
             };
 

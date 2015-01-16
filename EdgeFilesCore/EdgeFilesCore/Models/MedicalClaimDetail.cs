@@ -56,10 +56,10 @@ namespace EdgeFilesCore.Models
         public String IssuerClaimPaidDate { get; set; }
 
         [XmlElement("allowedTotalAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public decimal AllowedTotalAmount { get; set; }
+        public String AllowedTotalAmount { get; set; }
 
         [XmlElement("policyPaidTotalAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public decimal PolicyPaidTotalAmount { get; set; }
+        public String PolicyPaidTotalAmount { get; set; }
 
         [XmlElement("derivedServiceClaimIndicator", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string DerivedServiceClaimIndicator { get; set; }

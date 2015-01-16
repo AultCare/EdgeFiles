@@ -41,10 +41,10 @@ namespace EdgeFilesCore.Models
         public string RenderingProviderIdentifier { get; set; }
 
         [XmlElement("allowedAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public decimal AllowedAmount { get; set; }
+        public String AllowedAmount { get; set; }
 
         [XmlElement("policyPaidAmount", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public decimal PolicyPaidAmount { get; set; }
+        public String PolicyPaidAmount { get; set; }
 
         [XmlElement("derivedServiceClaimIndicator", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string DerivedServiceClaimIndicator { get; set; }

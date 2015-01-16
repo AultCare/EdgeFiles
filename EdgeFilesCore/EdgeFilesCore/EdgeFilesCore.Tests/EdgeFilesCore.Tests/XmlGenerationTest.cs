@@ -24,7 +24,7 @@ namespace EdgeFilesCore.Tests
                 SubmissionTypeCode = "M",
                 ClaimDetailTotalQuantity = 1,
                 ClaimServiceLineTotalQuantity = 1,
-                InsurancePlanPaidOnFileTotalAmount = 715.00M,
+                InsurancePlanPaidOnFileTotalAmount = 715.00M.ToString("N2"),
                 IncludedMedicalClaimIssuer = new MedicalClaimIssuer()
             };
 
@@ -34,7 +34,7 @@ namespace EdgeFilesCore.Tests
                 IssuerIdentifier = "",
                 IssuerClaimDetailTotalQuantity = 1,
                 IssuerClaimServiceLineTotalQuantity = 1,
-                IssuerPlanPaidTotalAmount = 715.00M,
+                IssuerPlanPaidTotalAmount = 715.00M.ToString("N2"),
                 IncludedMedicalClaimPlan = new List<MedicalClaimPlan>()
             };
 
@@ -44,7 +44,7 @@ namespace EdgeFilesCore.Tests
                 InsurancePlanIdentifier = "34567MD004555500",
                 InsurancePlanClaimDetailTotalQuantity = 1,
                 InsurancePlanClaimServiceLineTotalQuantity = 1,
-                InsurancePlanPaidTotalAmount = 715.00M,
+                InsurancePlanPaidTotalAmount = 715.00M.ToString("N2"),
                 IncludedMedicalClaimDetail = new List<MedicalClaimDetail>()
             };
 
@@ -66,8 +66,8 @@ namespace EdgeFilesCore.Tests
                 BillingProviderIdQualifier = "99",
                 BillingProviderIdentifier = "808401234567893",
                 IssuerClaimPaidDate = new DateTime(2014, 4, 1).ToString("yyyy-MM-dd"),
-                AllowedTotalAmount = 865.00M,
-                PolicyPaidTotalAmount = 715M,
+                AllowedTotalAmount = 865.00M.ToString(),
+                PolicyPaidTotalAmount = 715M.ToString("N2"),
                 //  DerivedServiceClaimIndicator = "N"
             };
 
@@ -89,8 +89,8 @@ namespace EdgeFilesCore.Tests
                 ServiceFacilityTypeCode = "",
                 RenderingProviderIdQualifier = "99",
                 RenderingProviderIdentifier = "808401234567893",
-                AllowedAmount = 865M,
-                PolicyPaidAmount = 715M,
+                AllowedAmount = 865M.ToString("N2").Replace(",", ""),
+                PolicyPaidAmount = 715M.ToString("N2").Replace(",", ""),
                 DerivedServiceClaimIndicator = "N"
             };
 
