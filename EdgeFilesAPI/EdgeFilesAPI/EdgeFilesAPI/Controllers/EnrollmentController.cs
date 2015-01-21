@@ -27,9 +27,13 @@ namespace EdgeFilesAPI.Controllers
 
             foreach (var enrollee in enrolleeSubmission.EnrolleeDetails)
             {
+                var memberId = MaskService.PasswordHash.CreateHash(enrollee.MemberId);
+                var check = enrolleeList.Where(x => x.InsuredMemberIdentifier == memberId);
+                if (check.Any()) continue;
+
                 var e = new EnrollmentEnrollee
                 {
-                    InsuredMemberIdentifier = MaskService.PasswordHash.CreateHash(enrollee.MemberId),
+                    InsuredMemberIdentifier = memberId,
                     InsuredMemberBirthDate = enrollee.BirthDate.ToString("yyyy-MM-dd"),
                     InsuredMemberGenderCode = enrollee.Gender,
                     IncludedInsuredMemberProfile = new List<EnrollmentEnrolleeProfile>()
@@ -38,9 +42,8 @@ namespace EdgeFilesAPI.Controllers
                 var enrollee1 = enrollee;
                 var otherRecordsForthisMember = enrolleeSubmission.EnrolleeDetails.Where(x => x.MemberId == enrollee1.MemberId);
 
-                var dependentProfiles = new List<EnrollmentEnrolleeProfile>();
+                var profilesForThisMember = new List<EnrollmentEnrolleeProfile>();
 
-                // TODO -- need to do this per enrollment period
                 foreach (var enrolleeDetailsViewModel in otherRecordsForthisMember)
                 {
                     var profile = new EnrollmentEnrolleeProfile
@@ -55,10 +58,10 @@ namespace EdgeFilesAPI.Controllers
                         SubscriberIndicator = enrolleeDetailsViewModel.SubscriberInd ? "S" : ""
                     };
                     profileCount += 1;
-                    dependentProfiles.Add(profile);
+                    profilesForThisMember.Add(profile);
                 }
 
-                e.IncludedInsuredMemberProfile.AddRange(dependentProfiles);
+                e.IncludedInsuredMemberProfile.AddRange(profilesForThisMember);
                 enrolleeList.Add(e);
             }
 
