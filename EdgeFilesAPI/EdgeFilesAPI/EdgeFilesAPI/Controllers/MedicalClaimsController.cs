@@ -1,4 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
+using EdgeFilesAPI.ViewModels;
+using EdgeFilesCore.Models;
+using EdgeFilesCore.Services;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,10 +11,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using AutoMapper;
-using EdgeFilesAPI.ViewModels;
-using EdgeFilesCore.Models;
-using EdgeFilesCore.Services;
 
 namespace EdgeFilesAPI.Controllers
 {
@@ -57,7 +57,7 @@ namespace EdgeFilesAPI.Controllers
                 //var serviceLineCount = new Dictionary<string, int>();
 
                 IGrouping<string, MedicalClaimsDetailViewModel> claims = planClaims;
-                foreach (var claim in medicalSubmission.MedicalClaims.Where(x => x.PlanId == claims.First().PlanId).GroupBy(x => x.ClaimIdentifier))
+                foreach (var claim in medicalSubmission.MedicalClaims.Where(x => x.PlanId == claims.First().PlanId).GroupBy(x => new { x.ClaimIdentifier, x.VoidReplaceCode }))
                 {
                     #region Medical Claim Detail
 
@@ -65,8 +65,9 @@ namespace EdgeFilesAPI.Controllers
                     {
                         var mcslList = new List<MedicalClaimServiceLine>();
 
-                        indClaim.ClaimIdentifier = MaskService.PasswordHash.CreateHash(indClaim.ClaimIdentifier);
-                        indClaim.InsuredMemberIdentifier = MaskService.PasswordHash.CreateHash(indClaim.InsuredMemberIdentifier);
+                        indClaim.ClaimIdentifier = indClaim.ClaimIdentifier;
+                        indClaim.OriginalClaimIdentifier = indClaim.OriginalClaimIdentifier;
+                        indClaim.InsuredMemberIdentifier = indClaim.InsuredMemberIdentifier;
 
                         #region Medical Claim Service Line
 
@@ -85,7 +86,10 @@ namespace EdgeFilesAPI.Controllers
                                 ServiceFromDate = claimLine.ServiceFromDate.ToString("yyyy-MM-dd"),
                                 ServiceToDate = claimLine.ServiceToDate.ToString("yyyy-MM-dd"),
                                 ServiceModifierCode = claimLine.ServiceModifierCode,
-                                ServiceTypeCode = claimLine.ServiceTypeCode.Length == 2 ? claimLine.ServiceTypeCode : claimLine.ServiceTypeCode.PadLeft(2, '0'),
+                                ServiceTypeCode =
+                                    claimLine.ServiceTypeCode.Length == 2 || String.IsNullOrEmpty(claimLine.ServiceTypeCode)
+                                        ? claimLine.ServiceTypeCode
+                                        : claimLine.ServiceTypeCode.PadLeft(2, '0'),
                                 ServiceLineNumber = claimLine.ServiceLineNumber
                             });
                         }
@@ -97,8 +101,10 @@ namespace EdgeFilesAPI.Controllers
 
                         var medicalClaimDetail = new MedicalClaimDetail
                         {
-                            IncludedDetailServiceLine = new MedicalClaimDetailServiceLine { IncludedDetailServiceLine = mcslList },
-                            AllowedTotalAmount = mcslList.Sum(x => Decimal.Parse(x.AllowedAmount)).ToString("N2").Replace(",", ""),
+                            IncludedDetailServiceLine =
+                                new MedicalClaimDetailServiceLine { IncludedDetailServiceLine = mcslList },
+                            AllowedTotalAmount =
+                                mcslList.Sum(x => Decimal.Parse(x.AllowedAmount)).ToString("N2").Replace(",", ""),
                             BillTypeCode = indClaim.BillTypeCode, // double check that all in a group are the same
                             BillingProviderIdQualifier = indClaim.BillingProviderIdQualifier,
                             BillingProviderIdentifier = indClaim.BillingProviderIdentifier,
@@ -106,14 +112,18 @@ namespace EdgeFilesAPI.Controllers
                             ClaimProcessedDateTime = indClaim.ClaimProcessedDateTime,
                             DerivedServiceClaimIndicator = indClaim.DerivedServiceClaimIndicator,
                             DiagnosisCode = indClaim.DiagnosisCode,
-                            DiagnosisTypeCode = indClaim.DiagnosisTypeCode.Length == 2 ? indClaim.DiagnosisTypeCode : indClaim.DiagnosisTypeCode.PadLeft(2, '0'),
+                            DiagnosisTypeCode =
+                                indClaim.DiagnosisTypeCode.Length == 2
+                                    ? indClaim.DiagnosisTypeCode
+                                    : indClaim.DiagnosisTypeCode.PadLeft(2, '0'),
                             DischargeStatusCode = indClaim.DischargeStatusCode,
                             FormTypeCode = indClaim.FormTypeCode,
                             VoidReplaceCode = indClaim.VoidReplaceCode,
                             InsuredMemberIdentifier = indClaim.InsuredMemberIdentifier,
                             IssuerClaimPaidDate = indClaim.IssuerClaimPaidDate.ToString("yyyy-MM-dd"),
                             OriginalClaimIdentifier = indClaim.OriginalClaimIdentifier,
-                            PolicyPaidTotalAmount = mcslList.Sum(x => Decimal.Parse(x.PolicyPaidAmount)).ToString("N2").Replace(",", ""),
+                            PolicyPaidTotalAmount =
+                                mcslList.Sum(x => Decimal.Parse(x.PolicyPaidAmount)).ToString("N2").Replace(",", ""),
                             StatementCoverFromDate = indClaim.StatementCoverFromDate.ToString("yyyy-MM-dd"),
                             StatementCoverToDate = indClaim.StatementCoverToDate.ToString("yyyy-MM-dd")
                             //,DerivedServiceClaimIndicator = indClaim.DerivedServiceClaimIndicator,

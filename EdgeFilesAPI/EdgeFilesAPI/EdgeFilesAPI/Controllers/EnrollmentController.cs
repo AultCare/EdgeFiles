@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EdgeFilesAPI.ViewModels;
+using EdgeFilesCore.Models;
+using EdgeFilesCore.Services;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,9 +10,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using EdgeFilesAPI.ViewModels;
-using EdgeFilesCore.Models;
-using EdgeFilesCore.Services;
 
 namespace EdgeFilesAPI.Controllers
 {
@@ -27,7 +27,7 @@ namespace EdgeFilesAPI.Controllers
 
             foreach (var enrollee in enrolleeSubmission.EnrolleeDetails)
             {
-                var memberId = MaskService.PasswordHash.CreateHash(enrollee.MemberId);
+                var memberId = enrollee.MemberId;
                 var check = enrolleeList.Where(x => x.InsuredMemberIdentifier == memberId);
                 if (check.Any()) continue;
 
@@ -54,7 +54,7 @@ namespace EdgeFilesAPI.Controllers
                         InsurancePlanIdentifier = enrolleeDetailsViewModel.PlanId,
                         InsurancePlanPremiumAmount = enrolleeDetailsViewModel.PremiumAmount,
                         RateAreaIdentifier = String.IsNullOrEmpty(enrolleeDetailsViewModel.RatingArea) ? enrollee.RatingArea : enrolleeDetailsViewModel.RatingArea,
-                        SubscriberIdentifier = enrolleeDetailsViewModel.SubscriberInd ? "" : MaskService.PasswordHash.CreateHash(enrolleeDetailsViewModel.SubscriberMemberId),
+                        SubscriberIdentifier = enrolleeDetailsViewModel.SubscriberInd ? "" : enrolleeDetailsViewModel.SubscriberMemberId,
                         SubscriberIndicator = enrolleeDetailsViewModel.SubscriberInd ? "S" : ""
                     };
                     profileCount += 1;

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using AutoMapper;
+using EdgeFilesAPI.ViewModels;
+using EdgeFilesCore.Models;
+using EdgeFilesCore.Services;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,10 +11,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
-using AutoMapper;
-using EdgeFilesAPI.ViewModels;
-using EdgeFilesCore.Models;
-using EdgeFilesCore.Services;
 
 namespace EdgeFilesAPI.Controllers
 {
@@ -30,8 +30,8 @@ namespace EdgeFilesAPI.Controllers
             {
                 claim.PrescriptionFillDate = DateTime.Parse(claim.PrescriptionFillDate).ToString("yyyy-MM-dd");
                 claim.IssuerClaimPaidDate = DateTime.Parse(claim.IssuerClaimPaidDate).ToString("yyyy-MM-dd");
-                claim.InsuredMemberIdentifier = MaskService.PasswordHash.CreateHash(claim.InsuredMemberIdentifier);
-                claim.ClaimIdentifier = MaskService.PasswordHash.CreateHash(claim.ClaimIdentifier);
+                claim.InsuredMemberIdentifier = claim.InsuredMemberIdentifier;
+                claim.ClaimIdentifier = claim.ClaimIdentifier;
             }
 
             //pharmacySubmission.PharmacyClaims
