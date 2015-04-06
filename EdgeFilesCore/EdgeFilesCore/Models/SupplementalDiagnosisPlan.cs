@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 
 namespace EdgeFilesCore.Models
 {
-
     [XmlRoot(ElementName = "includedSupplementalDiagnosisPlan", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
     public class SupplementalDiagnosisPlan
     {
@@ -19,7 +18,7 @@ namespace EdgeFilesCore.Models
         [XmlElement("insurancePlanFileDetailTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public int InsurancePlanFileDetailTotalQuantity { get; set; }
 
-        [XmlElement("insurancePlanFileDetailTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        [XmlElement("IncludedSupplementalDiagnosisDetail", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public List<SupplementalDiagnosisDetail> IncludedSupplementalDiagnosisDetail { get; set; }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using EdgeFilesCore.Models;
+﻿using EdgeFilesCore.Models;
 using EdgeFilesCore.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace EdgeFilesCore.Tests
 {
@@ -12,7 +13,7 @@ namespace EdgeFilesCore.Tests
         [TestMethod]
         public void MedicalClaimsFileTest()
         {
-            MedicalClaimSubmissionXmlGenerator medicalClaimSubmissionXmlGenerator =
+            var medicalClaimSubmissionXmlGenerator =
                 new MedicalClaimSubmissionXmlGenerator();
 
             var medicalClaimSubmission = new MedicalClaimSubmission
@@ -66,15 +67,15 @@ namespace EdgeFilesCore.Tests
                 BillingProviderIdQualifier = "99",
                 BillingProviderIdentifier = "808401234567893",
                 IssuerClaimPaidDate = new DateTime(2014, 4, 1).ToString("yyyy-MM-dd"),
-                AllowedTotalAmount = 865.00M.ToString(),
+                AllowedTotalAmount = 865.00M.ToString(CultureInfo.CurrentCulture),
                 PolicyPaidTotalAmount = 715M.ToString("N2"),
                 //  DerivedServiceClaimIndicator = "N"
             };
 
-            //var detailServiceLine = new MedicalClaimDetailServiceLine
-            //{
-            //    IncludedDetailServiceLine = new List<MedicalClaimServiceLine>()
-            //};
+            var detailServiceLine = new MedicalClaimDetailServiceLine
+            {
+                IncludedDetailServiceLine = new List<MedicalClaimServiceLine>()
+            };
 
             var medicalClaimSvcLine = new MedicalClaimServiceLine
             {
@@ -94,8 +95,8 @@ namespace EdgeFilesCore.Tests
                 DerivedServiceClaimIndicator = "N"
             };
 
-            //detailServiceLine.IncludedDetailServiceLine.Add(medicalClaimSvcLine);
-            // medicalClaimDetail.IncludedDetailServiceLine = detailServiceLine;
+            medicalClaimDetail.IncludedDetailServiceLine = detailServiceLine;
+            medicalClaimDetail.IncludedDetailServiceLine.IncludedDetailServiceLine.Add(medicalClaimSvcLine);
             medicalClaimPlan.IncludedMedicalClaimDetail.Add(medicalClaimDetail);
             medicalClaimIssuer.IncludedMedicalClaimPlan.Add(medicalClaimPlan);
             medicalClaimSubmission.IncludedMedicalClaimIssuer = medicalClaimIssuer;
@@ -103,16 +104,17 @@ namespace EdgeFilesCore.Tests
             medicalClaimSubmissionXmlGenerator.MedicalClaimSubmission = medicalClaimSubmission;
             medicalClaimSubmissionXmlGenerator.HiosId = "12345";
             medicalClaimSubmissionXmlGenerator.ExecutionZone = "T";
-            XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(medicalClaimSubmissionXmlGenerator);
 
-            string path = AppDomain.CurrentDomain.BaseDirectory;
+            var xmlGeneratorService = new XmlGeneratorService(medicalClaimSubmissionXmlGenerator);
+
+            var path = AppDomain.CurrentDomain.BaseDirectory;
             xmlGeneratorService.GenerateXml(path);
         }
 
         [TestMethod]
         public void PharmacyClaimsFileTest()
         {
-            PharmacyClaimSubmissionXmlGenerator pharmacyClaimsSubmissionXmlGenerator =
+            var pharmacyClaimsSubmissionXmlGenerator =
                 new PharmacyClaimSubmissionXmlGenerator();
 
             var pharmacyClaimsSubmission = new PharmacyClaimSubmission
@@ -144,7 +146,8 @@ namespace EdgeFilesCore.Tests
                 IncludedPharmacyClaimDetail = new List<PharmacyClaimLevel>()
             };
 
-            // pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlan = pharmacyClaimInsurancePlan;
+            pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlans = new List<PharmacyClaimInsurancePlan>();
+            pharmacyClaimIssuer.IncludedPharmacyClaimInsurancePlans.Add(pharmacyClaimInsurancePlan);
 
             var pharmacyClaim1 = new PharmacyClaimLevel
             {
@@ -196,15 +199,15 @@ namespace EdgeFilesCore.Tests
             pharmacyClaimsSubmissionXmlGenerator.HiosId = "12345";
             pharmacyClaimsSubmissionXmlGenerator.ExecutionZone = "T";
 
-            XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(pharmacyClaimsSubmissionXmlGenerator);
-            string path = AppDomain.CurrentDomain.BaseDirectory;
+            var xmlGeneratorService = new XmlGeneratorService(pharmacyClaimsSubmissionXmlGenerator);
+            var path = AppDomain.CurrentDomain.BaseDirectory;
             xmlGeneratorService.GenerateXml(path);
         }
 
         [TestMethod]
         public void EnrollmentFileTest()
         {
-            EnrollmentSubmissionXmlGenerator enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator();
+            var enrollmentSubmissionXml = new EnrollmentSubmissionXmlGenerator();
 
             var enrollmentSubmission = new EnrollmentSubmission
             {
@@ -217,7 +220,7 @@ namespace EdgeFilesCore.Tests
                 InsuredMemberProfileTotalQuantity = 3
             };
 
-            EnrollmentIssuer enrollmentIssuer = new EnrollmentIssuer
+            var enrollmentIssuer = new EnrollmentIssuer
             {
                 RecordIdentifier = 22,
                 IssuerIdentifier = "34567",
@@ -293,9 +296,63 @@ namespace EdgeFilesCore.Tests
             enrollmentSubmissionXml.HiosId = "12345";
             enrollmentSubmissionXml.ExecutionZone = "T";
 
-            XmlGeneratorService xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
+            var xmlGeneratorService = new XmlGeneratorService(enrollmentSubmissionXml);
 
-            string path = AppDomain.CurrentDomain.BaseDirectory;
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            xmlGeneratorService.GenerateXml(path);
+        }
+
+        [TestMethod]
+        public void SupplementalFileTest()
+        {
+            var supplementalClaimsSubmissionXmlGenerator = new SupplementalDiagnosisSubmissionXmlGenerator();
+
+            var supplementalClaimsSubmission = new SupplementalDiagnosisSubmission
+            {
+                FileIdentifier = "123456789120",
+                ExecutionZoneCode = "T",
+                InterfaceControlReleaseNumber = "02.00.00",
+                GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                SubmissionTypeCode = "S",
+                //FileDetailTotalQuantity = 0,
+                //IncludedSupplementalDiagnosIssuer = new SupplementalDiagnosisIssuer()
+            };
+
+            var issuer = new SupplementalDiagnosisIssuer
+            {
+                IssuerIdentifier = "44064",
+                IncludedSupplementalDiagnosisPlan = new List<SupplementalDiagnosisPlan>()
+            };
+
+            var plan = new SupplementalDiagnosisPlan
+            {
+                InsurancePlanIdentifier = "44064MD001234400",
+                IncludedSupplementalDiagnosisDetail = new List<SupplementalDiagnosisDetail>()
+            };
+
+            var detail = new SupplementalDiagnosisDetail
+            {
+                InsuredMemberIdentifier = "Ms1234578MK",
+                OriginalClaimIdentifier = "1234591",
+                DetailRecordProcessedDateTime = new DateTime(2014, 6, 24).ToString("yyyy-MM-ddTHH:mm:ss"),
+                AddDeleteVoidCode = "A",
+                ServiceFromDate = new DateTime(2014, 2, 15).ToString("yyyy-MM-dd"),
+                ServiceToDate = new DateTime(2014, 3, 15).ToString("yyyy-MM-dd"),
+                DiagnosisTypeCode = "01",
+                SupplementalDiagnosisCode = "V371",
+                SourceCode = "MR"
+            };
+
+            plan.IncludedSupplementalDiagnosisDetail.Add(detail);
+            issuer.IncludedSupplementalDiagnosisPlan.Add(plan);
+            supplementalClaimsSubmission.IncludedSupplementalDiagnosIssuer = issuer;
+
+            supplementalClaimsSubmissionXmlGenerator.SupplementalSubmission = supplementalClaimsSubmission;
+            supplementalClaimsSubmissionXmlGenerator.HiosId = issuer.IssuerIdentifier;
+            supplementalClaimsSubmissionXmlGenerator.ExecutionZone = supplementalClaimsSubmission.ExecutionZoneCode;
+
+            var xmlGeneratorService = new XmlGeneratorService(supplementalClaimsSubmissionXmlGenerator);
+            var path = AppDomain.CurrentDomain.BaseDirectory;
             xmlGeneratorService.GenerateXml(path);
         }
     }
