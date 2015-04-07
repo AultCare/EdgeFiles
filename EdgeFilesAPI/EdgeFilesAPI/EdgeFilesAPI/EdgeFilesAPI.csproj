@@ -186,6 +186,8 @@
     <Compile Include="ViewModels\PharmacyClaimLevelViewModel.cs" />
     <Compile Include="ViewModels\PharmacySubmissionViewModel.cs" />
     <Compile Include="ViewModels\SubmissionViewModel.cs" />
+    <Compile Include="ViewModels\SupplementalDetailViewModel.cs" />
+    <Compile Include="ViewModels\SupplementalSubmissionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
