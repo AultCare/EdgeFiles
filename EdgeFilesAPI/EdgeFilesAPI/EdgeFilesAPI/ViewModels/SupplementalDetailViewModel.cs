@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace EdgeFilesAPI.ViewModels
 {
     public class SupplementalDetailViewModel
     {
+        public String SupplementalDiagnosisDetailRecordIdentifier { get; set; }
+
         public string PlanId { get; set; }
 
         public string InsuredMemberIdentifier { get; set; }
@@ -19,9 +18,9 @@ namespace EdgeFilesAPI.ViewModels
 
         public string OriginalSupplementalDetailId { get; set; }
 
-        public string ServiceFromDate { get; set; }
+        public DateTime ServiceFromDate { get; set; }
 
-        public string ServiceToDate { get; set; }
+        public DateTime ServiceToDate { get; set; }
 
         public string DiagnosisTypeCode { get; set; }
 

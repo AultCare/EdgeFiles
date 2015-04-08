@@ -3,19 +3,22 @@ using EdgeFilesCore.Models;
 using EdgeFilesCore.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 
 namespace EdgeFilesAPI.Controllers
 {
     public class SupplementalFileController : ApiController
     {
-        // POST api/<controller>
         public HttpResponseMessage Post(SupplementalSubmissionViewModel submitted)
         {
+            var fileId = DateTime.UtcNow.ToFileTime().ToString(CultureInfo.CurrentCulture);
+
             var planList = new List<SupplementalDiagnosisPlan>();
 
             foreach (var plan in submitted.SupplementalDiagnosisDetails.GroupBy(x => x.PlanId))
@@ -26,13 +29,14 @@ namespace EdgeFilesAPI.Controllers
                 {
                     detailList.Add(new SupplementalDiagnosisDetail
                     {
+                        SupplmentalDiagnosisDetailRecordIdentifier = detail.SupplementalDiagnosisCode,
                         AddDeleteVoidCode = detail.AddDeleteVoidCode,
                         DetailRecordProcessedDateTime = detail.DetailRecordProcessedDateTime,
                         DiagnosisTypeCode = detail.DiagnosisTypeCode,
                         OriginalClaimIdentifier = detail.OriginalClaimIdentifier,
                         OriginalSupplementalDetailId = detail.OriginalSupplementalDetailId,
-                        ServiceFromDate = detail.ServiceFromDate,
-                        ServiceToDate = detail.ServiceToDate,
+                        ServiceFromDate = detail.ServiceFromDate.ToString("yyyy-MM-dd"),
+                        ServiceToDate = detail.ServiceToDate.ToString("yyyy-MM-dd"),
                         SourceCode = detail.SourceCode,
                         SupplementalDiagnosisCode = detail.SupplementalDiagnosisCode,
                         InsuredMemberIdentifier = detail.InsuredMemberIdentifier,
@@ -42,23 +46,27 @@ namespace EdgeFilesAPI.Controllers
                 planList.Add(new SupplementalDiagnosisPlan
                 {
                     InsurancePlanIdentifier = plan.First().PlanId,
-                    IncludedSupplementalDiagnosisDetail = detailList
+                    IncludedSupplementalDiagnosisDetail = detailList,
+                    InsurancePlanFileDetailTotalQuantity = detailList.Count()
                 });
             }
 
             var issuer = new SupplementalDiagnosisIssuer
             {
                 IssuerIdentifier = submitted.IssuerIdentifier,
-                IncludedSupplementalDiagnosisPlan = planList
+                IncludedSupplementalDiagnosisPlan = planList,
+                IssuerClaimFileTotalQuantity = planList.Count()
             };
 
             var submission = new SupplementalDiagnosisSubmission
             {
+                FileIdentifier = fileId,
                 ExecutionZoneCode = submitted.ExecutionZoneCode,
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = submitted.SubmissionTypeCode,
                 InterfaceControlReleaseNumber = submitted.ExecutionZoneCode,
-                IncludedSupplementalDiagnosIssuer = issuer
+                IncludedSupplementalDiagnosIssuer = issuer,
+                FileDetailTotalQuantity = issuer.IncludedSupplementalDiagnosisPlan.SelectMany(x => x.IncludedSupplementalDiagnosisDetail).Count()
             };
 
             var supplementalClaimsSubmissionXmlGenerator = new SupplementalDiagnosisSubmissionXmlGenerator();
@@ -68,7 +76,7 @@ namespace EdgeFilesAPI.Controllers
             supplementalClaimsSubmissionXmlGenerator.ExecutionZone = submission.ExecutionZoneCode;
 
             var xmlGeneratorService = new XmlGeneratorService(supplementalClaimsSubmissionXmlGenerator);
-            var path = AppDomain.CurrentDomain.BaseDirectory;
+            var path = HttpContext.Current.Request.MapPath(@"~/Output");
             var filePath = xmlGeneratorService.GenerateXml(path);
 
             var filename = filePath.Replace(path, "");
