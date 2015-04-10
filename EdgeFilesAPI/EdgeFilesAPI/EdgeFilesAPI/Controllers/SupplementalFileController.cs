@@ -29,9 +29,9 @@ namespace EdgeFilesAPI.Controllers
                 {
                     detailList.Add(new SupplementalDiagnosisDetail
                     {
-                        SupplmentalDiagnosisDetailRecordIdentifier = detail.SupplementalDiagnosisCode,
+                        SupplementalDiagnosisDetailRecordIdentifier = detail.SupplementalDiagnosisCode,
                         AddDeleteVoidCode = detail.AddDeleteVoidCode,
-                        DetailRecordProcessedDateTime = detail.DetailRecordProcessedDateTime,
+                        DetailRecordProcessedDateTime = detail.DetailRecordProcessedDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
                         DiagnosisTypeCode = detail.DiagnosisTypeCode,
                         OriginalClaimIdentifier = detail.OriginalClaimIdentifier,
                         OriginalSupplementalDetailId = detail.OriginalSupplementalDetailId,
@@ -39,7 +39,7 @@ namespace EdgeFilesAPI.Controllers
                         ServiceToDate = detail.ServiceToDate.ToString("yyyy-MM-dd"),
                         SourceCode = detail.SourceCode,
                         SupplementalDiagnosisCode = detail.SupplementalDiagnosisCode,
-                        InsuredMemberIdentifier = detail.InsuredMemberIdentifier,
+                        InsuredMemberIdentifier = detail.InsuredMemberIdentifier
                     });
                 }
 
@@ -55,17 +55,17 @@ namespace EdgeFilesAPI.Controllers
             {
                 IssuerIdentifier = submitted.IssuerIdentifier,
                 IncludedSupplementalDiagnosisPlan = planList,
-                IssuerClaimFileTotalQuantity = planList.Count()
+                IssuerFileDetailTotalQuantity = planList.SelectMany(x => x.IncludedSupplementalDiagnosisDetail).Count(),
             };
 
             var submission = new SupplementalDiagnosisSubmission
             {
-                FileIdentifier = fileId,
+                FileIdentifier = fileId.Substring(fileId.Length - 12, 12),
                 ExecutionZoneCode = submitted.ExecutionZoneCode,
                 GenerationDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 SubmissionTypeCode = submitted.SubmissionTypeCode,
-                InterfaceControlReleaseNumber = submitted.ExecutionZoneCode,
-                IncludedSupplementalDiagnosIssuer = issuer,
+                InterfaceControlReleaseNumber = submitted.InterfaceControlReleaseNumber,
+                IncludedSupplementalDiagnosisIssuer = issuer,
                 FileDetailTotalQuantity = issuer.IncludedSupplementalDiagnosisPlan.SelectMany(x => x.IncludedSupplementalDiagnosisDetail).Count()
             };
 

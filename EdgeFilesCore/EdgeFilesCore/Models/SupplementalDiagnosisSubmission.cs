@@ -2,13 +2,13 @@
 
 namespace EdgeFilesCore.Models
 {
-    [XmlRoot(ElementName = "edgeServerSupplmentalDiagnosisSubmission", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+    [XmlRoot(ElementName = "edgeServerSupplementalClaimSubmission", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
     public class SupplementalDiagnosisSubmission : Submission
     {
         [XmlElement("fileDetailTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public int FileDetailTotalQuantity { get; set; }
 
-        [XmlElement("includedSupplementalDiagnosIssuer", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public SupplementalDiagnosisIssuer IncludedSupplementalDiagnosIssuer { get; set; }
+        [XmlElement("includedSupplementalDiagnosisIssuer", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        public SupplementalDiagnosisIssuer IncludedSupplementalDiagnosisIssuer { get; set; }
     }
 }

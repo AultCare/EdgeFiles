@@ -345,7 +345,7 @@ namespace EdgeFilesCore.Tests
 
             plan.IncludedSupplementalDiagnosisDetail.Add(detail);
             issuer.IncludedSupplementalDiagnosisPlan.Add(plan);
-            supplementalClaimsSubmission.IncludedSupplementalDiagnosIssuer = issuer;
+            supplementalClaimsSubmission.IncludedSupplementalDiagnosisIssuer = issuer;
 
             supplementalClaimsSubmissionXmlGenerator.SupplementalSubmission = supplementalClaimsSubmission;
             supplementalClaimsSubmissionXmlGenerator.HiosId = issuer.IssuerIdentifier;

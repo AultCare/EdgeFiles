@@ -11,8 +11,8 @@ namespace EdgeFilesCore.Models
         [XmlElement("insuredMemberIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string InsuredMemberIdentifier { get; set; }
 
-        [XmlElement("supplmentalDiagnosisDetailRecordIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public string SupplmentalDiagnosisDetailRecordIdentifier { get; set; }
+        [XmlElement("supplementalDiagnosisDetailRecordIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        public string SupplementalDiagnosisDetailRecordIdentifier { get; set; }
 
         [XmlElement("originalClaimIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string OriginalClaimIdentifier { get; set; }
@@ -23,7 +23,7 @@ namespace EdgeFilesCore.Models
         [XmlElement("addDeleteVoidCode", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string AddDeleteVoidCode { get; set; }
 
-        [XmlElement("originalSupplementalDetailId", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        [XmlElement("originalSupplementalDetailID", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string OriginalSupplementalDetailId { get; set; }
 
         [XmlElement("serviceFromDate", Namespace = "http://vo.edge.fm.cms.hhs.gov")]

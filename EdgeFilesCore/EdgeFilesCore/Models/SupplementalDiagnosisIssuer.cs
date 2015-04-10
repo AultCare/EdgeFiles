@@ -12,8 +12,8 @@ namespace EdgeFilesCore.Models
         [XmlElement("issuerIdentifier", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public string IssuerIdentifier { get; set; }
 
-        [XmlElement("issuerClaimFileTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
-        public int IssuerClaimFileTotalQuantity { get; set; }
+        [XmlElement("issuerFileDetailTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        public int IssuerFileDetailTotalQuantity { get; set; }
 
         [XmlElement("includedSupplementalDiagnosisPlan", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public List<SupplementalDiagnosisPlan> IncludedSupplementalDiagnosisPlan { get; set; }

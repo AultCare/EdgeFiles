@@ -18,7 +18,7 @@ namespace EdgeFilesCore.Models
         [XmlElement("insurancePlanFileDetailTotalQuantity", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public int InsurancePlanFileDetailTotalQuantity { get; set; }
 
-        [XmlElement("IncludedSupplementalDiagnosisDetail", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
+        [XmlElement("includedSupplementalDiagnosisDetail", Namespace = "http://vo.edge.fm.cms.hhs.gov")]
         public List<SupplementalDiagnosisDetail> IncludedSupplementalDiagnosisDetail { get; set; }
     }
 }

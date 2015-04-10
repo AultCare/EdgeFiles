@@ -12,7 +12,7 @@ namespace EdgeFilesAPI.ViewModels
 
         public string OriginalClaimIdentifier { get; set; }
 
-        public string DetailRecordProcessedDateTime { get; set; }
+        public DateTime DetailRecordProcessedDateTime { get; set; }
 
         public string AddDeleteVoidCode { get; set; }
 

@@ -40,9 +40,9 @@ namespace EdgeFilesCore.Models
 
             int recordId = 1;
 
-            SupplementalSubmission.IncludedSupplementalDiagnosIssuer.RecordIdentifier = recordId++;
+            SupplementalSubmission.IncludedSupplementalDiagnosisIssuer.RecordIdentifier = recordId++;
 
-            foreach (var plan in SupplementalSubmission.IncludedSupplementalDiagnosIssuer.IncludedSupplementalDiagnosisPlan)
+            foreach (var plan in SupplementalSubmission.IncludedSupplementalDiagnosisIssuer.IncludedSupplementalDiagnosisPlan)
             {
                 plan.RecordIdentifier = recordId++;
                 plan.IncludedSupplementalDiagnosisDetail.ForEach(x => x.RecordIdentifier = recordId++);
